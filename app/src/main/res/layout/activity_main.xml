@@ -1,18 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="esi.siw.nouzha.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:padding="@dimen/padding_register_edit_text"
+            android:layout_height="wrap_content"
+            android:id="@+id/firstName"
+            android:hint="@string/first_name"/>
+
+        <EditText
+            android:padding="@dimen/padding_register_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lastName"
+            android:hint="@string/last_name"/>
+
+        <EditText
+            android:padding="@dimen/padding_register_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:id="@+id/email"
+            android:hint="@string/email"/>
+
+        <EditText
+            android:padding="@dimen/padding_register_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:id="@+id/password"
+            android:hint="@string/password" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/register"
+            android:text="@string/register"/>
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

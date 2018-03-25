@@ -4,10 +4,6 @@ import java.sql.Blob;
 import java.sql.Time;
 import java.util.Date;
 
-/**
- * Created by Creator on 23/03/2018.
- */
-
 public class Activity {
 
     private String designation;

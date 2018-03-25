@@ -1,0 +1,7 @@
+<resources>
+    <string name="first_name">الإسم</string>
+    <string name="last_name">اللقب</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="register">تسجيل</string>
+</resources>
