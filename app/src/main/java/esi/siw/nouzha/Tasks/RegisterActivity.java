@@ -1,4 +1,4 @@
-package esi.siw.nouzha;
+package esi.siw.nouzha.Tasks;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
