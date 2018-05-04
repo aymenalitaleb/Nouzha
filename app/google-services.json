@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "819441839161",
-    "firebase_url": "https://nouzha2018-esi-sba.firebaseio.com",
-    "project_id": "nouzha2018-esi-sba",
-    "storage_bucket": "nouzha2018-esi-sba.appspot.com"
+    "project_number": "588757066708",
+    "firebase_url": "https://nouzha-app.firebaseio.com",
+    "project_id": "nouzha-app",
+    "storage_bucket": "nouzha-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:819441839161:android:b508394273cb5360",
+        "mobilesdk_app_id": "1:588757066708:android:b508394273cb5360",
         "android_client_info": {
           "package_name": "esi.siw.nouzha"
         }
       },
       "oauth_client": [
         {
-          "client_id": "819441839161-4in53coqn0hdm5u2ikmi23ofj3ot9bnc.apps.googleusercontent.com",
+          "client_id": "588757066708-k1565hktn082hf5ht5e020sjjfoakpma.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAd0uSOPVsdFrUf20vnIB3g8l5ZtvYwYII"
+          "current_key": "AIzaSyC5b0KwQV8VTK3cx-pSRPiYD_Iu9qMo-CI"
         }
       ],
       "services": {
