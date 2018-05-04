@@ -9,9 +9,19 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import esi.siw.nouzha.Dashboard;
+import esi.siw.nouzha.Entities.Activity;
 
 /**
  * Created by Creator on 25/03/2018.
@@ -26,57 +36,39 @@ public class RegisterActivity extends AsyncTask {
         this.context = context;
     }
 
-    protected void onPreExecute(){
+    protected void onPreExecute() {
     }
+
     @Override
     protected Object doInBackground(Object[] arg0) {
-        try{
+        try {
+
             // These inputs are sent via the post method
-            String firstName = (String)arg0[0];
-            String lastName = (String)arg0[1];
-            String email = (String)arg0[2];
-            String password = (String)arg0[3];
+            String email = (String) arg0[0];
+            String password = (String) arg0[1];
+            FirebaseAuth auth = FirebaseAuth.getInstance();
 
-            // The file that recieve the post method and read the inputs
-            String link="http://nouzha-app.000webhostapp.com/index.php";
-            String data  = URLEncoder.encode("firstName", "UTF-8") + "=" +
-                    URLEncoder.encode(firstName, "UTF-8");
-            data += "&" + URLEncoder.encode("lastName", "UTF-8") + "=" +
-                    URLEncoder.encode(lastName, "UTF-8");
-            data += "&" + URLEncoder.encode("email", "UTF-8") + "=" +
-                    URLEncoder.encode(email, "UTF-8");
-            data += "&" + URLEncoder.encode("password", "UTF-8") + "=" +
-                    URLEncoder.encode(password, "UTF-8");
-            Log.i("data: ", data);
+            auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener((android.app.Activity) context, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Toast.makeText(context, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(context, "Authentication failed." + task.getException(),
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                context.startActivity(new Intent(context, Dashboard.class));
+                                ((android.app.Activity) context).finish();
+                            }
+                        }
+                    });
+            return "ee";
 
-            // Create a connection to the file
-            URL url = new URL(link);
-            URLConnection conn = url.openConnection();
 
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-
-            // Sending the data to the server
-            wr.write( data );
-            wr.flush();
-
-            // Create a BufferReader to read the response from the server
-            BufferedReader reader = new BufferedReader(new
-                    InputStreamReader(conn.getInputStream()));
-
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            // Reading the response of the server
-            while((line = reader.readLine()) != null) {
-                sb.append(line);
-                break;
-            }
-
-            // The response will be read by the onPostExecute method
-            return sb.toString();
-
-        } catch(Exception e){
+        } catch (Exception e) {
             // Returning the exception in case of failure
             return new String("Exception: " + e.getMessage());
         }

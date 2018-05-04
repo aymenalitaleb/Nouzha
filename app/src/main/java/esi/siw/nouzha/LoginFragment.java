@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import esi.siw.nouzha.Tasks.LoginTask;
 import esi.siw.nouzha.Tasks.RegisterActivity;
 
 
@@ -28,6 +29,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     public void init(View view) {
+        email = view.findViewById(R.id.email);
         password = view.findViewById(R.id.password);
         loginBtn = view.findViewById(R.id.loginBtn);
         registerBtn = view.findViewById(R.id.registerBtn);
@@ -70,6 +72,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private void login() {
         String em = email.getText().toString();
         String pass = password.getText().toString();
-        new RegisterActivity(getContext()).execute(em,pass);
+        new LoginTask(getContext()).execute(em,pass);
     }
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import com.google.firebase.auth.*;
 
 import esi.siw.nouzha.Tasks.RegisterActivity;
 
@@ -20,6 +21,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     public EditText firstName, lastName, email, password;
     public Button registerBtn,loginBtn;
+
     View view;
 
     public RegisterFragment() {
@@ -71,12 +73,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
 
     public void register() {
-        String fName = firstName.getText().toString();
-        String lName = lastName.getText().toString();
         String em = email.getText().toString();
         String pass = password.getText().toString();
-        new RegisterActivity(getContext()).execute(fName,lName,em,pass);
-
+        new RegisterActivity(getContext()).execute(em,pass);
 
     }
 
