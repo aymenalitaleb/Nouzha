@@ -1,121 +1,93 @@
 package esi.siw.nouzha.Entities;
 
 import java.sql.Blob;
-import java.sql.Time;
 import java.util.Date;
 
-/**
- * Created by Creator on 23/03/2018.
- */
-
 public class User {
+    private String FirstName;
+    private String LastName;
+    private String Email;
+    private String Password;
+    private String BirthDay;
+    private String BirthPlace;
+    private String Profession;
+    private String Avatar;
 
-    private String firstName ;
-    private String lastName ;
-    private String email ;
-    private Date birthDay ;
-    private String birthPlace ;
-    private String profession ;
-    private Blob avatar ;
-    private float budget;
-    private Time freeTimeFrom;
-    private Time freeTimeTo;
-    private Date freeDays;
-    private Adress adress;
-
-    public Adress getAdress() {
-        return adress;
+    public User() {
     }
 
-    public void setAdress(Adress adress) {
-        this.adress = adress;
-    }
-
-    public float getBudget() {
-        return budget;
-    }
-
-    public void setBudget(float budget) {
-        this.budget = budget;
-    }
-
-    public Time getFreeTimeFrom() {
-        return freeTimeFrom;
-    }
-
-    public void setFreeTimeFrom(Time freeTimeFrom) {
-        this.freeTimeFrom = freeTimeFrom;
-    }
-
-    public Time getFreeTimeTo() {
-        return freeTimeTo;
-    }
-
-    public void setFreeTimeTo(Time freeTimeTo) {
-        this.freeTimeTo = freeTimeTo;
-    }
-
-    public Date getFreeDays() {
-        return freeDays;
-    }
-
-    public void setFreeDays(Date freeDays) {
-        this.freeDays = freeDays;
+    public User(String firstName, String lastName, String email, String password, String birthDay, String birthPlace, String profession, String avatar) {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        Password = password;
+        BirthDay = birthDay;
+        BirthPlace = birthPlace;
+        Profession = profession;
+        Avatar = avatar;
     }
 
     public String getFirstName() {
-        return firstName;
+        return FirstName;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        FirstName = firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return LastName;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        LastName = lastName;
     }
 
     public String getEmail() {
-        return email;
+        return Email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        Email = email;
     }
 
-    public Date getBirthDay() {
-        return birthDay;
+    public String getPassword() {
+        return Password;
     }
 
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+    public String getBirthDay() {
+        return BirthDay;
+    }
+
+    public void setBirthDay(String birthDay) {
+        BirthDay = birthDay;
     }
 
     public String getBirthPlace() {
-        return birthPlace;
+        return BirthPlace;
     }
 
     public void setBirthPlace(String birthPlace) {
-        this.birthPlace = birthPlace;
+        BirthPlace = birthPlace;
     }
 
     public String getProfession() {
-        return profession;
+        return Profession;
     }
 
     public void setProfession(String profession) {
-        this.profession = profession;
+        Profession = profession;
     }
 
-    public Blob getAvatar() {
-        return avatar;
+    public String getAvatar() {
+        return Avatar;
     }
 
-    public void setAvatar(Blob avatar) {
-        this.avatar = avatar;
+    public void setAvatar(String avatar) {
+        Avatar = avatar;
     }
 }

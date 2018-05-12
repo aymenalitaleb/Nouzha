@@ -1,17 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="esi.siw.nouzha.MainActivity">
+    android:background="@drawable/background"
+    tools:context="esi.siw.nouzha.MainActivity"
+    >
 
-    <FrameLayout
-        android:id="@+id/flContent"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/logo_nouzha" />
+
+        <TextView
+            android:id="@+id/txtSlogan"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/slogan"
+            android:textColor="@android:color/white" />
 
 
-    </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btnSignUp"
+            android:layout_height="wrap_content"
+            android:layout_width="10dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="SignUp"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/btnSignUp"
+            android:shadowColor="@color/black"
+            />
+
+        <Button
+            android:id="@+id/btnSignIn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="Sign In"
+            android:textColor="@android:color/white"
+            android:background="@color/BtnSignActive"
+           />
+            <!--app:cornerRadius="4dp"-->
+            <!--app:shadowColor="@android:color/black"-->
+            <!--app:shadowEnabled="true"-->
+            <!--app:shadowHeight="5dp" />-->
 
 
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

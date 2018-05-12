@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "588757066708",
-    "firebase_url": "https://nouzha-app.firebaseio.com",
-    "project_id": "nouzha-app",
-    "storage_bucket": "nouzha-app.appspot.com"
+    "project_number": "656803848435",
+    "firebase_url": "https://nouzha-app2018.firebaseio.com",
+    "project_id": "nouzha-app2018",
+    "storage_bucket": "nouzha-app2018.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:588757066708:android:b508394273cb5360",
+        "mobilesdk_app_id": "1:656803848435:android:b508394273cb5360",
         "android_client_info": {
           "package_name": "esi.siw.nouzha"
         }
       },
       "oauth_client": [
         {
-          "client_id": "588757066708-k1565hktn082hf5ht5e020sjjfoakpma.apps.googleusercontent.com",
+          "client_id": "656803848435-lqctf3qbtgc5n1s8d28bpsb83dfgte13.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "esi.siw.nouzha",
+            "certificate_hash": "c88c423c3eb3039a489f87b1366ec5cfc6f0a394"
+          }
+        },
+        {
+          "client_id": "656803848435-rt0e7aop34j90vohp97q16timshe79jb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC5b0KwQV8VTK3cx-pSRPiYD_Iu9qMo-CI"
+          "current_key": "AIzaSyDpQFq55TdHuQqkl121GGfuCNzHW-O_ASk"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656803848435-rt0e7aop34j90vohp97q16timshe79jb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
