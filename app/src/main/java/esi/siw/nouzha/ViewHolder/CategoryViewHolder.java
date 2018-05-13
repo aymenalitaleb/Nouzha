@@ -11,14 +11,14 @@ import esi.siw.nouzha.R;
 public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView txtCategoryName;
-    public ImageView imageView;
+    public ImageView category_image;
 
     private ItemClickListener itemClickListener;
 
     public CategoryViewHolder(View itemView) {
         super(itemView);
         txtCategoryName = itemView.findViewById(R.id.category_name);
-        imageView = itemView.findViewById(R.id.category_image);
+        category_image= itemView.findViewById(R.id.category_image);
 
         itemView.setOnClickListener(this);
 
@@ -31,6 +31,6 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
     @Override
     public void onClick(View view) {
 
-            itemClickListener.onClick(view,getAdapterPosition(),false);
+        itemClickListener.onClick(view, getAdapterPosition(), false);
     }
 }

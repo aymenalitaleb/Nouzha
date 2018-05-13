@@ -41,7 +41,7 @@ public class SignIn extends AppCompatActivity {
             public void onClick(View view) {
 
                 final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
-                mDialog.setMessage("Please waiting...");
+                mDialog.setMessage("Please wait...");
                 mDialog.show();
 
                 table_user.addValueEventListener(new ValueEventListener() {

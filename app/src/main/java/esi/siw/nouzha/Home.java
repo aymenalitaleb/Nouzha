@@ -1,5 +1,6 @@
 package esi.siw.nouzha;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -35,8 +35,9 @@ public class Home extends AppCompatActivity
 
     TextView txtFullName;
 
-    RecyclerView recycle_menu;
+    RecyclerView recycler_categories;
     RecyclerView.LayoutManager layoutManager;
+    FirebaseRecyclerAdapter<Category, CategoryViewHolder> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,31 +82,39 @@ public class Home extends AppCompatActivity
 
         //Load Menu
 
-        recycle_menu = findViewById(R.id.recycler_menu);
-        recycle_menu.setHasFixedSize(true);
+        recycler_categories = findViewById(R.id.recycler_categories);
+        recycler_categories.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
-        recycle_menu.setLayoutManager(layoutManager);
+        recycler_categories.setLayoutManager(layoutManager);
         loadMenu();
 
 
     }
 
     private void loadMenu() {
-        FirebaseRecyclerAdapter<Category, CategoryViewHolder> adapter = new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(Category.class, R.layout.menu_item, CategoryViewHolder.class, category) {
+        adapter = new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(Category.class,
+                R.layout.categorie_item,
+                CategoryViewHolder.class,
+                category) {
             @Override
             protected void populateViewHolder(CategoryViewHolder viewHolder, Category model, int position) {
                 viewHolder.txtCategoryName.setText(model.getName());
-                Picasso.with(getBaseContext()).load(model.getImage()).into(viewHolder.imageView);
+                Picasso.with(getBaseContext()).load(model.getImage()).into(viewHolder.category_image);
                 final Category clickItem = model;
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-                        Toast.makeText(Home.this, "" + clickItem.getName(), Toast.LENGTH_SHORT).show();
+                        //get Category and send to new activity
+                        Intent activitiesList = new Intent(Home.this, ActivitiesList.class);
+
+                        //Because CategoryId is key, so we just get  key of this item
+                        activitiesList.putExtra("CategoryId", adapter.getRef(position).getKey());
+                        startActivity(activitiesList);
                     }
                 });
             }
         };
-        recycle_menu.setAdapter(adapter);
+        recycler_categories.setAdapter(adapter);
     }
 
     @Override
