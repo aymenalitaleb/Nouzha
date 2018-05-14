@@ -22,10 +22,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-import esi.siw.nouzha.Common.Common;
-import esi.siw.nouzha.Entities.Category;
-import esi.siw.nouzha.Interface.ItemClickListener;
-import esi.siw.nouzha.ViewHolder.CategoryViewHolder;
+import esi.siw.nouzha.common.Common;
+import esi.siw.nouzha.models.Category;
+import esi.siw.nouzha.interfaces.ItemClickListener;
+import esi.siw.nouzha.viewHolder.CategoryViewHolder;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

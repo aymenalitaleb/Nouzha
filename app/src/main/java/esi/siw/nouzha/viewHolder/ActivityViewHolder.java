@@ -1,11 +1,11 @@
-package esi.siw.nouzha.ViewHolder;
+package esi.siw.nouzha.viewHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import esi.siw.nouzha.Interface.ItemClickListener;
+import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.R;
 
 public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -1,4 +1,4 @@
-package esi.siw.nouzha.Entities;
+package esi.siw.nouzha.models;
 
 import java.sql.Blob;
 import java.sql.Time;

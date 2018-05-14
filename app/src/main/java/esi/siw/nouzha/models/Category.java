@@ -1,4 +1,4 @@
-package esi.siw.nouzha.Entities;
+package esi.siw.nouzha.models;
 
 public class Category {
     private String Name;

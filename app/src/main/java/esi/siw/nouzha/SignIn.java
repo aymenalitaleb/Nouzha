@@ -15,8 +15,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import esi.siw.nouzha.Common.Common;
-import esi.siw.nouzha.Entities.User;
+import esi.siw.nouzha.common.Common;
+import esi.siw.nouzha.models.User;
 
 public class SignIn extends AppCompatActivity {
     EditText edtPhone, edtPassword;

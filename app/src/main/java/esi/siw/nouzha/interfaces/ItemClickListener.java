@@ -1,4 +1,4 @@
-package esi.siw.nouzha.Interface;
+package esi.siw.nouzha.interfaces;
 
 import android.view.View;
 

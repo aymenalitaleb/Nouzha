@@ -1,4 +1,4 @@
-package esi.siw.nouzha.Entities;
+package esi.siw.nouzha.models;
 
 /**
  * Created by Creator on 23/03/2018.

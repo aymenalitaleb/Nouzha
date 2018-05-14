@@ -1,7 +1,4 @@
-package esi.siw.nouzha.Entities;
-
-import java.sql.Blob;
-import java.util.Date;
+package esi.siw.nouzha.models;
 
 public class User {
     private String FirstName;
