@@ -9,6 +9,7 @@ public class Activity {
     private String Time_from;
     private String Time_to;
     private String Prix;
+    private String Discount;
     private String Image;
     private String Street;
     private String Number;
@@ -20,7 +21,7 @@ public class Activity {
     public Activity() {
     }
 
-    public Activity(String designation, String nbPlaces, String description, String date, String time_from, String time_to, String prix, String image, String street, String number, String zipCode, String city, String attitude, String longitude) {
+    public Activity(String designation, String nbPlaces, String description, String date, String time_from, String time_to, String prix, String discount, String image, String street, String number, String zipCode, String city, String attitude, String longitude) {
         Designation = designation;
         NbPlaces = nbPlaces;
         Description = description;
@@ -28,6 +29,7 @@ public class Activity {
         Time_from = time_from;
         Time_to = time_to;
         Prix = prix;
+        Discount = discount;
         Image = image;
         Street = street;
         Number = number;
@@ -147,5 +149,13 @@ public class Activity {
 
     public void setLongitude(String longitude) {
         Longitude = longitude;
+    }
+
+    public String getDiscount() {
+        return Discount;
+    }
+
+    public void setDiscount(String discount) {
+        Discount = discount;
     }
 }

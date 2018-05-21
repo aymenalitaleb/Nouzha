@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.firebase.database.DataSnapshot;
@@ -15,7 +17,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import esi.siw.nouzha.database.Database;
 import esi.siw.nouzha.models.Activity;
+import esi.siw.nouzha.models.Order;
 
 public class ActivityDetails extends AppCompatActivity {
 
@@ -30,6 +34,8 @@ public class ActivityDetails extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference activities;
 
+    Activity currentActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +49,21 @@ public class ActivityDetails extends AppCompatActivity {
 
         numberButton = findViewById(R.id.number_button);
         btnGoing = findViewById(R.id.btnGoing);
+        btnGoing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Database(getBaseContext()).addToTicket(new Order(
+                        activityId,
+                        currentActivity.getDesignation(),
+                        numberButton.getNumber(),
+                        currentActivity.getPrix(),
+                        currentActivity.getDiscount()
+                ));
+
+                Toast.makeText(ActivityDetails.this, "Added to carte", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         activity_description = findViewById(R.id.activity_description);
         activity_price = findViewById(R.id.activity_price);
         activity_name = findViewById(R.id.activity_name);
@@ -69,17 +90,19 @@ public class ActivityDetails extends AppCompatActivity {
         activities.child(activityId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Activity activity = dataSnapshot.getValue(Activity.class);
-                Picasso.with(getBaseContext()).load(activity.getImage()).into(activity_image);
-                collapsingToolbarLayout.setTitle(activity.getDesignation());
-                activity_price.setText(activity.getPrix());
-                activity_name.setText(activity.getDesignation());
-                activity_description.setText(activity.getDescription());
-                activity_date.setText(activity.getDate());
-                activity_time_from.setText(activity.getTime_from());
-                activity_time_to.setText(activity.getTime_to());
-                activity_nb_place.setText(activity.getNbPlaces());
-                String activityAdresse = activity.getNumber() + ", " + activity.getStreet() + ", " + activity.getCity();
+                currentActivity = dataSnapshot.getValue(Activity.class);
+
+                //Set Image
+                Picasso.with(getBaseContext()).load(currentActivity.getImage()).into(activity_image);
+                collapsingToolbarLayout.setTitle(currentActivity.getDesignation());
+                activity_price.setText(currentActivity.getPrix());
+                activity_name.setText(currentActivity.getDesignation());
+                activity_description.setText(currentActivity.getDescription());
+                activity_date.setText(currentActivity.getDate());
+                activity_time_from.setText(currentActivity.getTime_from());
+                activity_time_to.setText(currentActivity.getTime_to());
+                activity_nb_place.setText(currentActivity.getNbPlaces());
+                String activityAdresse = currentActivity.getNumber() + ", " + currentActivity.getStreet() + ", " + currentActivity.getCity();
                 activity_adress.setText(activityAdresse);
             }
 

@@ -64,10 +64,11 @@ public class SignUp extends AppCompatActivity {
                                     edtBirthDay.getText().toString(),
                                     edtBirthPlace.getText().toString(),
                                     edtProfession.getText().toString(),
-                                    edtAvatar.getText().toString()
+                                    edtAvatar.getText().toString(),
+                                    "false"
                             );
                             table_user.child(edtPhone.getText().toString()).setValue(user);
-                            Toast.makeText(SignUp.this,"Sign Up successfully",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUp.this, "Sign Up successfully", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }

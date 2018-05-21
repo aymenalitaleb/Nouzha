@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import esi.siw.nouzha.common.Common;
+import esi.siw.nouzha.common.CommonStaff;
 import esi.siw.nouzha.models.User;
 
 public class SignIn extends AppCompatActivity {
@@ -54,16 +55,29 @@ public class SignIn extends AppCompatActivity {
                             //Get User data
                             mDialog.dismiss();
                             User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
+                            user.setPhone(edtPhone.getText().toString()); //set phone
+                            if (!Boolean.parseBoolean(user.getIsStaff())) {
+                                if (user.getPassword().equals(edtPassword.getText().toString())) {
 
-                            if (user.getPassword().equals(edtPassword.getText().toString())) {
+                                    Intent homeIntent = new Intent(SignIn.this, Home.class);
+                                    Common.currentUser = user;
+                                    startActivity(homeIntent);
+                                    finish();
 
-                                Intent homeIntent = new Intent(SignIn.this,Home.class);
-                                Common.currentUser=user;
-                                startActivity(homeIntent);
-                                finish();
+                                } else {
+                                    Toast.makeText(SignIn.this, "Wrong user's password !", Toast.LENGTH_SHORT).show();
+                                }
+                            } else if (Boolean.parseBoolean(user.getIsStaff())) {
+                                if (user.getPassword().equals(edtPassword.getText().toString())) {
 
-                            } else {
-                                Toast.makeText(SignIn.this, "Wrong password !", Toast.LENGTH_SHORT).show();
+                                    Intent login = new Intent(SignIn.this, HomeStaff.class);
+                                    CommonStaff.currentUser = user;
+                                    startActivity(login);
+                                    finish();
+
+                                } else {
+                                    Toast.makeText(SignIn.this, "Wrong staff's password !", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         } else {
                             mDialog.dismiss();

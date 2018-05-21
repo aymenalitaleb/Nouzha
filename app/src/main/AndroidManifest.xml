@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="esi.siw.nouzha">
+
+    <uses-sdk tools:overrideLibrary="com.mancj.materialsearchbar" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -26,7 +29,13 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme" />
         <activity android:name=".ActivitiesList" />
-        <activity android:name=".ActivityDetails"></activity>
+        <activity android:name=".ActivityDetails" />
+        <activity android:name=".Ticket" />
+        <activity android:name=".OrderStatus" />
+        <activity
+            android:name=".HomeStaff"
+            android:label="@string/title_activity_home_staff"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -9,6 +9,8 @@ public class User {
     private String BirthPlace;
     private String Profession;
     private String Avatar;
+    private String Phone;
+    private String isStaff;
 
     public User() {
     }
@@ -22,6 +24,26 @@ public class User {
         BirthPlace = birthPlace;
         Profession = profession;
         Avatar = avatar;
+    }
+
+    public User(String firstName, String lastName, String email, String password, String birthDay, String birthPlace, String profession, String avatar, String isStaff) {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        Password = password;
+        BirthDay = birthDay;
+        BirthPlace = birthPlace;
+        Profession = profession;
+        Avatar = avatar;
+        this.isStaff = isStaff;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
     }
 
     public String getFirstName() {
@@ -86,5 +108,13 @@ public class User {
 
     public void setAvatar(String avatar) {
         Avatar = avatar;
+    }
+
+    public String getIsStaff() {
+        return isStaff;
+    }
+
+    public void setIsStaff(String isStaff) {
+        this.isStaff = isStaff;
     }
 }
