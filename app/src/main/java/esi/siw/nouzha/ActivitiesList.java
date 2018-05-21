@@ -45,7 +45,7 @@ public class ActivitiesList extends AppCompatActivity {
 
         //Get Intent here
         if (getIntent() != null) {
-            categoryId = getIntent().getStringExtra("CategoryId");
+            categoryId = getIntent().getStringExtra("categoryId");
             if (!categoryId.isEmpty() && categoryId != null) {
                 laodListActivities(categoryId);
             }
@@ -56,7 +56,7 @@ public class ActivitiesList extends AppCompatActivity {
         adapter = new FirebaseRecyclerAdapter<Activity, ActivityViewHolder>(Activity.class,
                 R.layout.activity_item,
                 ActivityViewHolder.class,
-                activitiesList.orderByChild("CategoryId").equalTo(categoryId)) //select  * from Activity where CategoryId = categoryid
+                activitiesList.orderByChild("categoryId").equalTo(categoryId)) //select  * from Activity where CategoryId = categoryid
         {
             @Override
             protected void populateViewHolder(ActivityViewHolder viewHolder, Activity model, int position) {
@@ -68,7 +68,7 @@ public class ActivitiesList extends AppCompatActivity {
                     public void onClick(View view, int position, boolean isLongClick) {
                         //Start new Activity
                         Intent activityDetails = new Intent(ActivitiesList.this, ActivityDetails.class);
-                        activityDetails.putExtra("ActivityId",adapter.getRef(position).getKey());//Send activity Id to new activity
+                        activityDetails.putExtra("activityId",adapter.getRef(position).getKey());//Send activity Id to new activity
                         startActivity(activityDetails);
                     }
                 });

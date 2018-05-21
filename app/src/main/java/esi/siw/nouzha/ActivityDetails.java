@@ -60,7 +60,7 @@ public class ActivityDetails extends AppCompatActivity {
                         currentActivity.getDiscount()
                 ));
 
-                Toast.makeText(ActivityDetails.this, "Added to carte", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivityDetails.this, "Added to My tickets", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -79,7 +79,7 @@ public class ActivityDetails extends AppCompatActivity {
 
         //Get Activity id from Intent
         if (getIntent() != null)
-            activityId = getIntent().getStringExtra("ActivityId");
+            activityId = getIntent().getStringExtra("activityId");
         if (!activityId.isEmpty()) {
             getDetailsActivity(activityId);
         }

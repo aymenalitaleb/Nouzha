@@ -174,7 +174,7 @@ public class Home extends AppCompatActivity
                 Category.class,
                 R.layout.categorie_item,
                 CategoryViewHolder.class,
-                category.orderByChild("Name").equalTo(text.toString())) {
+                category.orderByChild("name").equalTo(text.toString())) {
             @Override
             protected void populateViewHolder(CategoryViewHolder viewHolder, Category model, int position) {
                 viewHolder.txtCategoryName.setText(model.getName());
@@ -187,7 +187,7 @@ public class Home extends AppCompatActivity
                         Intent activitiesList = new Intent(Home.this, ActivitiesList.class);
 
                         //Because CategoryId is key, so we just get  key of this item
-                        activitiesList.putExtra("CategoryId", searchAdapter.getRef(position).getKey());
+                        activitiesList.putExtra("categoryId", searchAdapter.getRef(position).getKey());
                         startActivity(activitiesList);
                     }
                 });
@@ -231,7 +231,7 @@ public class Home extends AppCompatActivity
                         Intent activitiesList = new Intent(Home.this, ActivitiesList.class);
 
                         //Because CategoryId is key, so we just get  key of this item
-                        activitiesList.putExtra("CategoryId", adapter.getRef(position).getKey());
+                        activitiesList.putExtra("categoryId", adapter.getRef(position).getKey());
                         startActivity(activitiesList);
                     }
                 });
@@ -281,7 +281,7 @@ public class Home extends AppCompatActivity
         alertDialog.setTitle("Insert your current settings");
         final EditText currentBudget = new EditText(Home.this);
         currentBudget.setInputType(InputType.TYPE_CLASS_NUMBER);
-        currentBudget.setHint("Bidget");
+        currentBudget.setHint("Budget");
         final EditText freeTimeFrom = new EditText(Home.this);
         freeTimeFrom.setInputType(InputType.TYPE_DATETIME_VARIATION_TIME);
         freeTimeFrom.setHint("From");

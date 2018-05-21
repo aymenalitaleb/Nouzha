@@ -10,19 +10,19 @@ import esi.siw.nouzha.R;
 import esi.siw.nouzha.common.CommonStaff;
 import esi.siw.nouzha.interfaces.ItemClickListener;
 
-public class CategoryStaffViewHolder  extends RecyclerView.ViewHolder implements
+public class ActivityStaffViewHolder  extends RecyclerView.ViewHolder implements
         View.OnClickListener,
         View.OnCreateContextMenuListener {
 
-    public TextView txtCategoryName;
-    public ImageView category_image;
+    public TextView activity_name;
+    public ImageView activity_image;
 
     private ItemClickListener itemClickListener;
 
-    public CategoryStaffViewHolder(View itemView) {
+    public ActivityStaffViewHolder(View itemView) {
         super(itemView);
-        txtCategoryName = itemView.findViewById(R.id.category_name);
-        category_image= itemView.findViewById(R.id.category_image);
+        activity_name = itemView.findViewById(R.id.activity_name);
+        activity_image= itemView.findViewById(R.id.activity_image);
         itemView.setOnCreateContextMenuListener(this);
         itemView.setOnClickListener(this);
 

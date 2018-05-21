@@ -66,7 +66,7 @@ public class HomeStaff extends AppCompatActivity
 
     Category newCategory;
     Uri imageURI;
-    private final int PICK_IMAGE_REQUEST = 71;
+
     DrawerLayout drawer;
 
 
@@ -212,24 +212,26 @@ public class HomeStaff extends AppCompatActivity
         }
     }
 
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select picture"), CommonStaff.PICK_IMAGE_REQUEST);
+
+    }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == CommonStaff.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageURI = data.getData();
             btnSelect.setText("Image selected !");
 
         }
     }
 
-    private void chooseImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select picture"), PICK_IMAGE_REQUEST);
-
-    }
 
     private void loadCategories() {
         adapter = new FirebaseRecyclerAdapter<Category, CategoryStaffViewHolder>(
@@ -246,7 +248,11 @@ public class HomeStaff extends AppCompatActivity
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-                        //
+                        //Send Categori Id and start new activity
+                        Intent activityList  = new Intent(HomeStaff.this,ActivityListStaff.class);
+                        activityList.putExtra("categoryId",adapter.getRef(position).getKey());
+                        startActivity(activityList);
+
                     }
                 });
 
