@@ -17,6 +17,7 @@ public class Database extends SQLiteAssetHelper {
     private static final String DB_NAME = "nouzhaDB.db";
     private static final int DB_VER = 1;
 
+
     public Database(Context context) {
         super(context, DB_NAME, null, DB_VER);
     }
@@ -61,6 +62,7 @@ public class Database extends SQLiteAssetHelper {
         String query = String.format("DELETE FROM OrderDetail");
         database.execSQL(query);
     }
+
 
 
 }
