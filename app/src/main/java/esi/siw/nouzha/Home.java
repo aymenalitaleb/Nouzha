@@ -69,7 +69,7 @@ public class Home extends AppCompatActivity
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Category");
+        toolbar.setTitle("Categories");
         setSupportActionBar(toolbar);
 
 
@@ -325,8 +325,8 @@ public class Home extends AppCompatActivity
         });
 
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });

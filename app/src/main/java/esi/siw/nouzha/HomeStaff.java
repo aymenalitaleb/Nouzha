@@ -106,8 +106,8 @@ public class HomeStaff extends AppCompatActivity
         //Set name for user
         View headerView = navigationView.getHeaderView(0);
         txtFullName_staff = headerView.findViewById(R.id.txtFullName_staff);
-        String fullName = CommonStaff.currentUser.getFirstName() + " " + CommonStaff.currentUser.getLastName();
-        Toast.makeText(HomeStaff.this, fullName, Toast.LENGTH_SHORT).show();
+//        String fullName = CommonStaff.currentUser.getFirstName() + " " + CommonStaff.currentUser.getLastName();
+        Toast.makeText(HomeStaff.this, "admin", Toast.LENGTH_SHORT).show();
 //        txtFullName_staff.setText(fullName);
 
         //Init View

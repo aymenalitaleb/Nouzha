@@ -14,7 +14,7 @@ import esi.siw.nouzha.models.Order;
 
 public class Database extends SQLiteAssetHelper {
 
-    private static final String DB_NAME = "nouzhaDB.db";
+    private static final String DB_NAME = "nouzha.db";
     private static final int DB_VER = 1;
 
 
@@ -26,7 +26,7 @@ public class Database extends SQLiteAssetHelper {
         SQLiteDatabase database = getReadableDatabase();
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-        String[] sqlSelect = {"ActivityId", "ActivityName", "Quantity", "Price", "Discount"};
+        String[] sqlSelect = {"activityId", "activityName", "quantity", "price", "discount"};
         String sqlTable = "OrderDetail";
 
         queryBuilder.setTables(sqlTable);
@@ -35,11 +35,11 @@ public class Database extends SQLiteAssetHelper {
         final List<Order> result = new ArrayList<>();
         if (c.moveToFirst()) {
             do {
-                result.add(new Order(c.getString(c.getColumnIndex("ActivityId")),
-                        c.getString(c.getColumnIndex("ActivityName")),
-                        c.getString(c.getColumnIndex("Quantity")),
-                        c.getString(c.getColumnIndex("Price")),
-                        c.getString(c.getColumnIndex("Discount"))
+                result.add(new Order(c.getString(c.getColumnIndex("activityId")),
+                        c.getString(c.getColumnIndex("activityName")),
+                        c.getString(c.getColumnIndex("quantity")),
+                        c.getString(c.getColumnIndex("price")),
+                        c.getString(c.getColumnIndex("discount"))
                 ));
             } while (c.moveToNext());
         }
@@ -48,7 +48,7 @@ public class Database extends SQLiteAssetHelper {
 
     public void addToTicket(Order order) {
         SQLiteDatabase database = getReadableDatabase();
-        String query = String.format("INSERT INTO OrderDetail(ActivityId,ActivityName,Quantity,Price,Discount) VALUES('%s','%s','%s','%s','%s');",
+        String query = String.format("INSERT INTO OrderDetail(activityId,activityName,quantity,price,discount) VALUES('%s','%s','%s','%s','%s');",
                 order.getActivityId(),
                 order.getActivityName(),
                 order.getQuantity(),

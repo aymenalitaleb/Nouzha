@@ -17,8 +17,26 @@ public class Activity {
     private String City;
     private String Attitude;
     private String Longitude;
+    private String categoryId;
 
     public Activity() {
+    }
+
+
+    public Activity(String designation, String nbPlaces, String description, String date, String time_from, String time_to, String prix, String discount, String image, String street, String number, String zipCode, String city) {
+        Designation = designation;
+        NbPlaces = nbPlaces;
+        Description = description;
+        Date = date;
+        Time_from = time_from;
+        Time_to = time_to;
+        Prix = prix;
+        Discount = discount;
+        Image = image;
+        Street = street;
+        Number = number;
+        ZipCode = zipCode;
+        City = city;
     }
 
     public Activity(String designation, String nbPlaces, String description, String date, String time_from, String time_to, String prix, String discount, String image, String street, String number, String zipCode, String city, String attitude, String longitude) {
@@ -157,5 +175,13 @@ public class Activity {
 
     public void setDiscount(String discount) {
         Discount = discount;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 }

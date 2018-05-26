@@ -55,8 +55,8 @@ public class ActivityListStaff extends AppCompatActivity {
     FirebaseRecyclerAdapter<Activity, ActivityStaffViewHolder> adapter;
 
     //Add new  Activity
-    EditText edtDesignation,edtnbPlace,edtDescription,edtDate,edtTime_from,edtTime_to,edtPrice,edtDiscount,edtCity,edtStreet,edtStreetNumber,edtZipCode;
-    Button btnSelect,btnUpload;
+    EditText edtDesignation, edtnbPlace, edtDescription, edtDate, edtTime_from, edtTime_to, edtPrice, edtDiscount, edtCity, edtStreet, edtStreetNumber, edtZipCode;
+    Button btnSelect, btnUpload;
 
     Activity newActivity;
     Uri imageURI;
@@ -194,6 +194,7 @@ public class ActivityListStaff extends AppCompatActivity {
                             newActivity.setDiscount(edtDiscount.getText().toString());
                             newActivity.setZipCode(edtZipCode.getText().toString());
                             newActivity.setImage(uri.toString());
+                            newActivity.setCategoryId(categoryId);
 
                         }
                     });

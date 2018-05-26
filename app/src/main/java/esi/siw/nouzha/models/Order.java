@@ -1,61 +1,61 @@
 package esi.siw.nouzha.models;
 
 public class Order {
-    private  String ActivityId;
-    private  String ActivityName;
-    private  String Quantity;
-    private  String Price;
-    private  String Discount;
+    private  String activityId;
+    private  String activityName;
+    private  String quantity;
+    private  String price;
+    private  String discount;
 
 
     public Order() {
     }
 
     public Order(String activityId, String activityName, String quantity, String price, String discount) {
-        ActivityId = activityId;
-        ActivityName = activityName;
-        Quantity = quantity;
-        Price = price;
-        Discount = discount;
+        this.activityId = activityId;
+        this.activityName = activityName;
+        this.quantity = quantity;
+        this.price = price;
+        this.discount = discount;
     }
 
     public String getActivityId() {
-        return ActivityId;
+        return activityId;
     }
 
     public void setActivityId(String activityId) {
-        ActivityId = activityId;
+        this.activityId = activityId;
     }
 
     public String getActivityName() {
-        return ActivityName;
+        return activityName;
     }
 
     public void setActivityName(String activityName) {
-        ActivityName = activityName;
+        this.activityName = activityName;
     }
 
     public String getQuantity() {
-        return Quantity;
+        return quantity;
     }
 
     public void setQuantity(String quantity) {
-        Quantity = quantity;
+        this.quantity = quantity;
     }
 
     public String getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(String price) {
-        Price = price;
+        this.price = price;
     }
 
     public String getDiscount() {
-        return Discount;
+        return discount;
     }
 
     public void setDiscount(String discount) {
-        Discount = discount;
+        this.discount = discount;
     }
 }
