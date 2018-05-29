@@ -43,65 +43,64 @@ public class SignIn extends AppCompatActivity {
         // Init paper
         Paper.init(this);
 
+        Paper.book().write(Common.USER_KEY, edtPhone.getText().toString());
+        Paper.book().write(Common.PWD_KEY, edtPassword.getText().toString());
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
-                mDialog.setMessage("Please wait...");
-                mDialog.show();
+                if (Common.isConnectedToInternet(getBaseContext())) {
+                    final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
+                    mDialog.setMessage("Please wait...");
+                    mDialog.show();
+                    table_user.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                // Save user session
-                Paper.book().write(Common.USER_KEY,edtPhone.getText().toString());
-                Paper.book().write(Common.PWD_KEY,edtPassword.getText().toString());
+                            //Check if user not exist in database
+                            if (dataSnapshot.child(edtPhone.getText().toString()).exists()) {
 
-                table_user.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                //Get User data
+                                mDialog.dismiss();
+                                User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
+                                user.setPhone(edtPhone.getText().toString()); //set phone
+                                if (!Boolean.parseBoolean(user.getIsStaff())) {
+                                    if (user.getPassword().equals(edtPassword.getText().toString())) {
+                                        Log.e("lastname", user.getLastname());
+                                        Intent homeIntent = new Intent(SignIn.this, Home.class);
+                                        Common.currentUser = user;
+                                        startActivity(homeIntent);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(SignIn.this, "Wrong user's password !", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else if (Boolean.parseBoolean(user.getIsStaff())) {
+                                    if (user.getPassword().equals(edtPassword.getText().toString())) {
+                                        Intent login = new Intent(SignIn.this, HomeStaff.class);
+                                        CommonStaff.currentUser = user;
+                                        startActivity(login);
+                                        finish();
 
-                        //Check if user not exist in database
-                        if (dataSnapshot.child(edtPhone.getText().toString()).exists()) {
-
-                            //Get User data
-                            mDialog.dismiss();
-                            User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
-                            user.setPhone(edtPhone.getText().toString()); //set phone
-                            if (!Boolean.parseBoolean(user.getIsStaff())) {
-                                if (user.getPassword().equals(edtPassword.getText().toString())) {
-                                    Log.e("lastname", user.getLastname());
-                                    Intent homeIntent = new Intent(SignIn.this, Home.class);
-                                    Common.currentUser = user;
-                                    startActivity(homeIntent);
-                                    finish();
-
-                                } else {
-                                    Toast.makeText(SignIn.this, "Wrong user's password !", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(SignIn.this, "Wrong staff's password !", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            } else if (Boolean.parseBoolean(user.getIsStaff())) {
-                                if (user.getPassword().equals(edtPassword.getText().toString())) {
+                            } else {
+                                mDialog.dismiss();
+                                Toast.makeText(SignIn.this, "User not exist in Database !", Toast.LENGTH_SHORT).show();
 
-                                    Intent login = new Intent(SignIn.this, HomeStaff.class);
-                                    CommonStaff.currentUser = user;
-                                    startActivity(login);
-                                    finish();
-
-                                } else {
-                                    Toast.makeText(SignIn.this, "Wrong staff's password !", Toast.LENGTH_SHORT).show();
-                                }
                             }
-                        } else {
-                            mDialog.dismiss();
-                            Toast.makeText(SignIn.this, "User not exist in Database !", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(SignIn.this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.database.Database;
 import esi.siw.nouzha.models.Activity;
 import esi.siw.nouzha.models.Order;
@@ -81,7 +82,12 @@ public class ActivityDetails extends AppCompatActivity {
         if (getIntent() != null)
             activityId = getIntent().getStringExtra("activityId");
         if (!activityId.isEmpty()) {
-            getDetailsActivity(activityId);
+            if (Common.isConnectedToInternet(getBaseContext())) {
+                getDetailsActivity(activityId);
+            } else {
+                Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
     }

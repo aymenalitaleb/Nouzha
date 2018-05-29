@@ -32,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
+import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.common.CommonStaff;
 import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Activity;
@@ -95,7 +96,11 @@ public class ActivityListStaff extends AppCompatActivity {
         if (getIntent() != null) {
             categoryId = getIntent().getStringExtra("categoryId");
             if (!categoryId.isEmpty()) {
-                loadListActivity(categoryId);
+                if (Common.isConnectedToInternet(getBaseContext())) {
+                    loadListActivity(categoryId);
+                } else {
+                    Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

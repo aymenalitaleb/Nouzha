@@ -39,10 +39,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
+import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.common.CommonStaff;
 import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Category;
 import esi.siw.nouzha.viewHolder.CategoryStaffViewHolder;
+import io.paperdb.Paper;
 
 public class HomeStaff extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -86,6 +88,9 @@ public class HomeStaff extends AppCompatActivity
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
+        // Init Paper
+        Paper.init(this);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -117,8 +122,11 @@ public class HomeStaff extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recycler_categories.setLayoutManager(layoutManager);
 
-        loadCategories();
-
+        if ( Common.isConnectedToInternet(getBaseContext())) {
+            loadCategories();
+        } else {
+            Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showDialog() {
@@ -305,7 +313,12 @@ public class HomeStaff extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_logout) {
-
+            // Delete session
+            Paper.book().destroy();
+            //Logout
+            Intent signIn = new Intent(HomeStaff.this, SignIn.class);
+            signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(signIn);
         }
 
 

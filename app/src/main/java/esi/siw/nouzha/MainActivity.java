@@ -64,14 +64,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        String user = Paper.book().read(Common.USER_KEY);
-        String password = Paper.book().read(Common.PWD_KEY);
-        if ( user!=null && password!=null) {
-            if (!user.isEmpty() && !password.isEmpty()) {
-                login(user, password);
+        if (Common.isConnectedToInternet(getBaseContext())) {
+            String user = Paper.book().read(Common.USER_KEY);
+            String password = Paper.book().read(Common.PWD_KEY);
+            if ( user!=null && password!=null) {
+                if (!user.isEmpty() && !password.isEmpty()) {
+                    login(user, password);
+                }
             }
         }
+
 
     }
 
@@ -119,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     mDialog.dismiss();
                     Toast.makeText(MainActivity.this, "User not exist in Database !", Toast.LENGTH_SHORT).show();
-
                 }
             }
 

@@ -122,7 +122,13 @@ public class Home extends AppCompatActivity
         recycler_categories.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recycler_categories.setLayoutManager(layoutManager);
-        loadCategories();
+
+        if ( Common.isConnectedToInternet(getBaseContext())) {
+            loadCategories();
+        } else {
+            Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+        }
+        
 
 
         //Search

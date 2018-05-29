@@ -6,12 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Activity;
 import esi.siw.nouzha.viewHolder.ActivityViewHolder;
@@ -47,7 +49,12 @@ public class ActivitiesList extends AppCompatActivity {
         if (getIntent() != null) {
             categoryId = getIntent().getStringExtra("categoryId");
             if (!categoryId.isEmpty() && categoryId != null) {
-                laodListActivities(categoryId);
+                if (Common.isConnectedToInternet(getBaseContext())) {
+                    laodListActivities(categoryId);
+                } else {
+                    Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+                }
+
             }
         }
     }
