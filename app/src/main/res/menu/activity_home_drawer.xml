@@ -62,6 +62,11 @@
                 android:icon="@drawable/ic_menu_send"
                 android:iconTint="@android:color/white"
                 android:title="Send" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_send"
+                android:iconTint="@android:color/white"
+                android:title="Logout" />
         </menu>
     </item>
 

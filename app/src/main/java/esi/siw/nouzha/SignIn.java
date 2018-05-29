@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,23 +19,29 @@ import com.google.firebase.database.ValueEventListener;
 import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.common.CommonStaff;
 import esi.siw.nouzha.models.User;
+import io.paperdb.Paper;
 
 public class SignIn extends AppCompatActivity {
     EditText edtPhone, edtPassword;
     Button btnSignIn;
 
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+
         edtPhone = findViewById(R.id.edtPhone);
         edtPassword = findViewById(R.id.edtPassword);
         btnSignIn = findViewById(R.id.btnSignIn);
 
         //Init Firebase
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = database.getReference("User");
+
+        // Init paper
+        Paper.init(this);
 
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +51,10 @@ public class SignIn extends AppCompatActivity {
                 final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
                 mDialog.setMessage("Please wait...");
                 mDialog.show();
+
+                // Save user session
+                Paper.book().write(Common.USER_KEY,edtPhone.getText().toString());
+                Paper.book().write(Common.PWD_KEY,edtPassword.getText().toString());
 
                 table_user.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -58,7 +69,7 @@ public class SignIn extends AppCompatActivity {
                             user.setPhone(edtPhone.getText().toString()); //set phone
                             if (!Boolean.parseBoolean(user.getIsStaff())) {
                                 if (user.getPassword().equals(edtPassword.getText().toString())) {
-
+                                    Log.e("lastname", user.getLastname());
                                     Intent homeIntent = new Intent(SignIn.this, Home.class);
                                     Common.currentUser = user;
                                     startActivity(homeIntent);
@@ -94,4 +105,6 @@ public class SignIn extends AppCompatActivity {
             }
         });
     }
+
+
 }

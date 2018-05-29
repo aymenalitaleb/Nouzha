@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-
+    implementation 'io.paperdb:paperdb:2.1'
     implementation 'com.google.firebase:firebase-storage:15.0.0'
     implementation 'com.google.firebase:firebase-auth:15.0.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])

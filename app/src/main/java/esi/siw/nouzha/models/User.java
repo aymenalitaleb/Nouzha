@@ -1,8 +1,8 @@
 package esi.siw.nouzha.models;
 
 public class User {
-    private String FirstName;
-    private String LastName;
+    private String Firstname;
+    private String Lastname;
     private String Email;
     private String Password;
     private String BirthDay;
@@ -15,9 +15,9 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, String birthDay, String birthPlace, String profession, String avatar) {
-        FirstName = firstName;
-        LastName = lastName;
+    public User(String firstname, String lastname, String email, String password, String birthDay, String birthPlace, String profession, String avatar) {
+        Firstname = firstname;
+        Lastname = lastname;
         Email = email;
         Password = password;
         BirthDay = birthDay;
@@ -26,9 +26,9 @@ public class User {
         Avatar = avatar;
     }
 
-    public User(String firstName, String lastName, String email, String password, String birthDay, String birthPlace, String profession, String avatar, String isStaff) {
-        FirstName = firstName;
-        LastName = lastName;
+    public User(String firstname, String lastname, String email, String password, String birthDay, String birthPlace, String profession, String avatar, String isStaff) {
+        Firstname = firstname;
+        Lastname = lastname;
         Email = email;
         Password = password;
         BirthDay = birthDay;
@@ -46,20 +46,20 @@ public class User {
         Phone = phone;
     }
 
-    public String getFirstName() {
-        return FirstName;
+    public String getFirstname() {
+        return Firstname;
     }
 
-    public void setFirstName(String firstName) {
-        FirstName = firstName;
+    public void setFirstname(String firstname) {
+        Firstname = firstname;
     }
 
-    public String getLastName() {
-        return LastName;
+    public String getLastname() {
+        return Lastname;
     }
 
-    public void setLastName(String lastName) {
-        LastName = lastName;
+    public void setLastname(String lastname) {
+        Lastname = lastname;
     }
 
     public String getEmail() {

@@ -12,6 +12,7 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
 
     public TextView txtCategoryName;
     public ImageView category_image;
+    public ImageView fav;
 
     private ItemClickListener itemClickListener;
 
@@ -19,6 +20,7 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
         super(itemView);
         txtCategoryName = itemView.findViewById(R.id.category_name);
         category_image= itemView.findViewById(R.id.category_image);
+        fav = itemView.findViewById(R.id.fav);
 
         itemView.setOnClickListener(this);
 

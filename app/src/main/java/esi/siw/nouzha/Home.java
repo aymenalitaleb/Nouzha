@@ -16,10 +16,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,12 +44,14 @@ import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Category;
 import esi.siw.nouzha.models.CurrentSettings;
 import esi.siw.nouzha.viewHolder.CategoryViewHolder;
+import io.paperdb.Paper;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseDatabase database;
-    DatabaseReference category, currentSettings;
+    DatabaseReference category, currentSettings, favourite;
+
 
     TextView txtFullName;
 
@@ -62,10 +66,14 @@ public class Home extends AppCompatActivity
     MaterialSearchBar materialSearchBar;
 
 
+    DatabaseReference table_user;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -77,6 +85,10 @@ public class Home extends AppCompatActivity
         database = FirebaseDatabase.getInstance();
         category = database.getReference("Category");
         currentSettings = database.getReference("Current_Settings");
+        favourite = database.getReference("userCategory");
+
+        // Init Paper
+        Paper.init(this);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -101,7 +113,7 @@ public class Home extends AppCompatActivity
 
         View headerView = navigationView.getHeaderView(0);
         txtFullName = headerView.findViewById(R.id.txtFullName);
-        String fullName = Common.currentUser.getLastName() + " " + Common.currentUser.getFirstName();
+        String fullName = Common.currentUser.getLastname() + " " + Common.currentUser.getFirstname();
         txtFullName.setText(fullName);
 
         //Load Menu
@@ -196,6 +208,7 @@ public class Home extends AppCompatActivity
         recycler_categories.setAdapter(searchAdapter);
     }
 
+
     private void loadSuggest() {
         category.addValueEventListener(new ValueEventListener() {
             @Override
@@ -215,15 +228,86 @@ public class Home extends AppCompatActivity
     }
 
     private void loadCategories() {
+
         adapter = new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(Category.class,
                 R.layout.categorie_item,
                 CategoryViewHolder.class,
                 category) {
             @Override
-            protected void populateViewHolder(CategoryViewHolder viewHolder, Category model, int position) {
+            protected void populateViewHolder(final CategoryViewHolder viewHolder, Category model, final int position) {
                 viewHolder.txtCategoryName.setText(model.getName());
                 Picasso.with(getBaseContext()).load(model.getImage()).into(viewHolder.category_image);
                 final Category clickItem = model;
+
+                final ImageView fav = viewHolder.fav;
+                fav.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final DatabaseReference categories = favourite.child(Common.currentUser.getPhone());
+
+                            categories.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (fav.getContentDescription().equals("non")) {
+                                        categories.child(adapter.getRef(position).getKey()).setValue("true");
+                                        Toast.makeText(Home.this, "Added to favourite", Toast.LENGTH_SHORT).show();
+                                        fav.setImageResource(R.drawable.ic_favorite_black_24dp);
+                                        fav.setContentDescription("oui");
+                                    } else {
+                                        categories.child(adapter.getRef(position).getKey()).removeValue();
+                                        Toast.makeText(Home.this, "Removed from favourite", Toast.LENGTH_SHORT).show();
+                                        fav.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                                        fav.setContentDescription("non");
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                    }
+                });
+
+                final ArrayList<String> userFavourite = new ArrayList<>();
+                DatabaseReference caregories = favourite.child(Common.currentUser.getPhone());
+                caregories.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.e("array list", dataSnapshot.getKey());
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            userFavourite.add(data.getKey());
+                            Log.e("array list", data.getKey());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                favourite.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        if (userFavourite.contains(adapter.getRef(position).getKey())) {
+                            viewHolder.fav.setImageResource(R.drawable.ic_favorite_black_24dp);
+                            fav.setContentDescription("oui");
+                        } else {
+                            viewHolder.fav.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                            fav.setContentDescription("non");
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
@@ -233,11 +317,15 @@ public class Home extends AppCompatActivity
                         //Because CategoryId is key, so we just get  key of this item
                         activitiesList.putExtra("categoryId", adapter.getRef(position).getKey());
                         startActivity(activitiesList);
+
                     }
                 });
             }
         };
         recycler_categories.setAdapter(adapter);
+
+
+
     }
 
     @Override
@@ -357,6 +445,9 @@ public class Home extends AppCompatActivity
         } else if (id == R.id.nav_statistics) {
 
         } else if (id == R.id.log_out) {
+
+            // Delete session
+            Paper.book().destroy();
             //Logout
             Intent signIn = new Intent(Home.this, SignIn.class);
             signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -368,6 +459,7 @@ public class Home extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

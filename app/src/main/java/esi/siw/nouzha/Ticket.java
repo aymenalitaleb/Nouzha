@@ -92,7 +92,7 @@ public class Ticket extends AppCompatActivity {
                 //Create new request
                 Request request = new Request(
                         Common.currentUser.getPhone(),
-                        Common.currentUser.getFirstName() + " " + Common.currentUser.getLastName(),
+                        Common.currentUser.getFirstname() + " " + Common.currentUser.getLastname(),
                         edtCity.getText().toString(),
                         txtTotalPrice.getText().toString(),
                         ticket

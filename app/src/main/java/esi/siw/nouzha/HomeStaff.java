@@ -70,6 +70,7 @@ public class HomeStaff extends AppCompatActivity
     DrawerLayout drawer;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +107,7 @@ public class HomeStaff extends AppCompatActivity
         //Set name for user
         View headerView = navigationView.getHeaderView(0);
         txtFullName_staff = headerView.findViewById(R.id.txtFullName_staff);
-//        String fullName = CommonStaff.currentUser.getFirstName() + " " + CommonStaff.currentUser.getLastName();
+//        String fullName = CommonStaff.currentUser.getFirstname() + " " + CommonStaff.currentUser.getLastname();
         Toast.makeText(HomeStaff.this, "admin", Toast.LENGTH_SHORT).show();
 //        txtFullName_staff.setText(fullName);
 
@@ -302,6 +303,10 @@ public class HomeStaff extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
+        if (id == R.id.nav_logout) {
+
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
