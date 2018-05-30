@@ -15,7 +15,7 @@ public class Activity {
     private String Number;
     private String ZipCode;
     private String City;
-    private String Attitude;
+    private String Latitude;
     private String Longitude;
     private String categoryId;
 
@@ -53,7 +53,7 @@ public class Activity {
         Number = number;
         ZipCode = zipCode;
         City = city;
-        Attitude = attitude;
+        Latitude = attitude;
         Longitude = longitude;
     }
 
@@ -153,12 +153,12 @@ public class Activity {
         City = city;
     }
 
-    public String getAttitude() {
-        return Attitude;
+    public String getLatitude() {
+        return Latitude;
     }
 
-    public void setAttitude(String attitude) {
-        Attitude = attitude;
+    public void setLatitude(String attitude) {
+        Latitude = attitude;
     }
 
     public String getLongitude() {

@@ -74,6 +74,7 @@ public class ActivitiesList extends AppCompatActivity {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
                         //Start new Activity
+
                         Intent activityDetails = new Intent(ActivitiesList.this, ActivityDetails.class);
                         activityDetails.putExtra("activityId",adapter.getRef(position).getKey());//Send activity Id to new activity
                         startActivity(activityDetails);

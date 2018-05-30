@@ -3,6 +3,8 @@ package esi.siw.nouzha;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +25,11 @@ import esi.siw.nouzha.database.Database;
 import esi.siw.nouzha.models.Activity;
 import esi.siw.nouzha.models.Order;
 
-public class ActivityDetails extends AppCompatActivity {
+public class ActivityDetails extends AppCompatActivity  {
+
+    private GoogleMap mMap;
+    public static Double latitude,longitude;
+    public static String designation;
 
     TextView activity_name, activity_price, activity_description, activity_date, activity_time_from, activity_time_to, activity_nb_place, activity_adress;
     ImageView activity_image;
@@ -45,6 +52,23 @@ public class ActivityDetails extends AppCompatActivity {
         //Firebase
         database = FirebaseDatabase.getInstance();
         activities = database.getReference("Activity");
+
+
+        //Map
+        Fragment fragment= null;
+        Class fragmentClass = null;
+        fragmentClass=MapFragment.class;
+        try{
+            fragment = (Fragment) fragmentClass.newInstance();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.mapContent,fragment).commit();
+
+
+
+
 
         //Init View
 
@@ -101,6 +125,7 @@ public class ActivityDetails extends AppCompatActivity {
                 //Set Image
                 Picasso.with(getBaseContext()).load(currentActivity.getImage()).into(activity_image);
                 collapsingToolbarLayout.setTitle(currentActivity.getDesignation());
+                designation=currentActivity.getDesignation();
                 activity_price.setText(currentActivity.getPrix());
                 activity_name.setText(currentActivity.getDesignation());
                 activity_description.setText(currentActivity.getDescription());
@@ -108,6 +133,8 @@ public class ActivityDetails extends AppCompatActivity {
                 activity_time_from.setText(currentActivity.getTime_from());
                 activity_time_to.setText(currentActivity.getTime_to());
                 activity_nb_place.setText(currentActivity.getNbPlaces());
+                latitude=Double.valueOf(currentActivity.getLatitude());
+                longitude=Double.valueOf(currentActivity.getLongitude());
                 String activityAdresse = currentActivity.getNumber() + ", " + currentActivity.getStreet() + ", " + currentActivity.getCity();
                 activity_adress.setText(activityAdresse);
             }
@@ -118,4 +145,6 @@ public class ActivityDetails extends AppCompatActivity {
             }
         });
     }
-}
+
+
+    }

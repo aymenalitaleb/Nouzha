@@ -44,17 +44,17 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnGoing"
+        style="@style/ButtonFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/nestedScrollView"
-        style="@style/ButtonFavorites"
         android:src="@drawable/ic_star_border_black_24dp"
         app:elevation="6dp"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|right|end"
         app:pressedTranslationZ="12dp"
-        app:useCompatPadding="true"/>
-        <!--android:backgroundTint="@android:color/white"-->
+        app:useCompatPadding="true" />
+    <!--android:backgroundTint="@android:color/white"-->
 
 
     <android.support.v4.widget.NestedScrollView
@@ -62,7 +62,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingBottom="?attr/actionBarSize">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -322,6 +323,20 @@
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
                 </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true">
+
+                <FrameLayout
+                    android:id="@+id/mapContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></FrameLayout>
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
