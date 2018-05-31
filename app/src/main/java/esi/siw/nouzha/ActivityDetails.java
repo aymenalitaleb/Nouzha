@@ -106,11 +106,11 @@ public class ActivityDetails extends AppCompatActivity  {
         if (getIntent() != null)
             activityId = getIntent().getStringExtra("activityId");
         if (!activityId.isEmpty()) {
-            if (Common.isConnectedToInternet(getBaseContext())) {
+           if (Common.isConnectedToInternet(getBaseContext())) {
                 getDetailsActivity(activityId);
             } else {
                 Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
-            }
+           }
 
         }
 

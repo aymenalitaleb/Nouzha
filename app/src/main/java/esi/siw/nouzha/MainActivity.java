@@ -25,7 +25,7 @@ import io.paperdb.Paper;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnSignIn,btnSignUp;
+    Button btnSignIn, btnSignUp;
     TextView txtSlogan;
 
 
@@ -37,19 +37,19 @@ public class MainActivity extends AppCompatActivity {
         // Init Paper
         Paper.init(this);
 
-        btnSignIn= findViewById(R.id.btnSignIn);
-        btnSignUp= findViewById(R.id.btnSignUp);
+        btnSignIn = findViewById(R.id.btnSignIn);
+        btnSignUp = findViewById(R.id.btnSignUp);
 
-        txtSlogan=findViewById(R.id.txtSlogan);
+        txtSlogan = findViewById(R.id.txtSlogan);
 
-        Typeface face = Typeface.createFromAsset(getAssets(),"fonts/Nabila.ttf");
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Nabila.ttf");
         txtSlogan.setTypeface(face);
 
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signIn = new Intent(MainActivity.this,SignIn.class);
+                Intent signIn = new Intent(MainActivity.this, SignIn.class);
                 startActivity(signIn);
 
             }
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signUn = new Intent(MainActivity.this,SignUp.class);
+                Intent signUn = new Intent(MainActivity.this, SignUp.class);
                 startActivity(signUn);
 
             }
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         if (Common.isConnectedToInternet(getBaseContext())) {
             String user = Paper.book().read(Common.USER_KEY);
             String password = Paper.book().read(Common.PWD_KEY);
-            if ( user!=null && password!=null) {
+            if (user != null && password != null) {
                 if (!user.isEmpty() && !password.isEmpty()) {
                     login(user, password);
                 }
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         mDialog.setMessage("Please wait...");
         mDialog.show();
 
-          table_user.addValueEventListener(new ValueEventListener() {
+        table_user.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

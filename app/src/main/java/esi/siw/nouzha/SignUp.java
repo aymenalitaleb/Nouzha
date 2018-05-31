@@ -14,8 +14,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Comment;
-
 import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.models.User;
 
@@ -44,10 +42,10 @@ public class SignUp extends AppCompatActivity {
         final DatabaseReference table_user = database.getReference("User");
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
-            
+
             @Override
             public void onClick(View view) {
-                
+
                 if (Common.isConnectedToInternet(getBaseContext())) {
 
                     final ProgressDialog mDialog = new ProgressDialog(SignUp.this);

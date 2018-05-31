@@ -49,7 +49,7 @@ public class ActivitiesList extends AppCompatActivity {
         if (getIntent() != null) {
             categoryId = getIntent().getStringExtra("categoryId");
             if (!categoryId.isEmpty() && categoryId != null) {
-                if (Common.isConnectedToInternet(getBaseContext())) {
+               if (Common.isConnectedToInternet(getBaseContext())) {
                     laodListActivities(categoryId);
                 } else {
                     Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();

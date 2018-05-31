@@ -128,7 +128,7 @@ public class Home extends AppCompatActivity
         } else {
             Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
         }
-        
+
 
 
         //Search

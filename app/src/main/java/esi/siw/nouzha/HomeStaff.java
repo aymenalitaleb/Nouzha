@@ -72,7 +72,6 @@ public class HomeStaff extends AppCompatActivity
     DrawerLayout drawer;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +121,7 @@ public class HomeStaff extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recycler_categories.setLayoutManager(layoutManager);
 
-        if ( Common.isConnectedToInternet(getBaseContext())) {
+        if (Common.isConnectedToInternet(getBaseContext())) {
             loadCategories();
         } else {
             Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
@@ -230,7 +229,6 @@ public class HomeStaff extends AppCompatActivity
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -258,8 +256,8 @@ public class HomeStaff extends AppCompatActivity
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
                         //Send Categori Id and start new activity
-                        Intent activityList  = new Intent(HomeStaff.this,ActivityListStaff.class);
-                        activityList.putExtra("categoryId",adapter.getRef(position).getKey());
+                        Intent activityList = new Intent(HomeStaff.this, ActivityListStaff.class);
+                        activityList.putExtra("categoryId", adapter.getRef(position).getKey());
                         startActivity(activityList);
 
                     }
@@ -334,8 +332,7 @@ public class HomeStaff extends AppCompatActivity
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getTitle().equals(CommonStaff.UPDATE)) {
             showUpdateDialog(adapter.getRef(item.getOrder()).getKey(), adapter.getItem(item.getOrder()));
-        }
-        else  if (item.getTitle().equals(CommonStaff.DELETE)) {
+        } else if (item.getTitle().equals(CommonStaff.DELETE)) {
             deleteCategory(adapter.getRef(item.getOrder()).getKey());
         }
 
