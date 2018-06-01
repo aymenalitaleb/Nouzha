@@ -54,14 +54,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-
         // Activer le marque de la position actuelle
-//        Double latitude = ActivityDetails.latitude;
-//        Double longitude = ActivityDetails.longitude;
-//        String designation = ActivityDetails.designation;
-        Double latitude = 40D;
-        Double longitude = 40D;
-        String designation = "Designation";
+        Double latitude = ActivityDetails.latitude;
+        Double longitude = ActivityDetails.longitude;
+        String designation = ActivityDetails.designation;
+//        Double latitude = 40D;
+//        Double longitude = 40D;
+//        String designation = "Designation";
         float zoomlevel = 10.0f;
         LatLng activityLocalisation = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(activityLocalisation).title(designation));
