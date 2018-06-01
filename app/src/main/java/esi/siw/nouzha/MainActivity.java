@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                     //Get User data
                     mDialog.dismiss();
+                    Log.e("phone ", phone);
                     User user = dataSnapshot.child(phone).getValue(User.class);
                     user.setPhone(phone); //set phone
                     if (!Boolean.parseBoolean(user.getIsStaff())) {

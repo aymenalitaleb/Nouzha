@@ -5,37 +5,46 @@ public class User {
     private String Lastname;
     private String Email;
     private String Password;
-    private String BirthDay;
-    private String BirthPlace;
+    private String Birthday;
+    private String PlaceBirth;
     private String Profession;
     private String Avatar;
     private String Phone;
     private String isStaff;
+    private String Budget;
+    private String DateFrom;
+    private String DateTo;
+
+
+
 
     public User() {
     }
 
-    public User(String firstname, String lastname, String email, String password, String birthDay, String birthPlace, String profession, String avatar) {
+    public User(String firstname, String lastname, String email, String password, String birthday, String placeBirth, String profession, String avatar) {
         Firstname = firstname;
         Lastname = lastname;
         Email = email;
         Password = password;
-        BirthDay = birthDay;
-        BirthPlace = birthPlace;
+        Birthday = birthday;
+        PlaceBirth = placeBirth;
         Profession = profession;
         Avatar = avatar;
     }
 
-    public User(String firstname, String lastname, String email, String password, String birthDay, String birthPlace, String profession, String avatar, String isStaff) {
+    public User(String firstname, String lastname, String email, String password, String birthday, String placeBirth, String profession, String avatar, String isStaff, String budget, String dateFrom, String dateTo) {
         Firstname = firstname;
         Lastname = lastname;
         Email = email;
         Password = password;
-        BirthDay = birthDay;
-        BirthPlace = birthPlace;
+        Birthday = birthday;
+        PlaceBirth = placeBirth;
         Profession = profession;
         Avatar = avatar;
         this.isStaff = isStaff;
+        Budget = budget;
+        this.DateFrom = dateFrom;
+        this.DateTo = dateTo;
     }
 
     public String getPhone() {
@@ -78,20 +87,20 @@ public class User {
         Password = password;
     }
 
-    public String getBirthDay() {
-        return BirthDay;
+    public String getBirthday() {
+        return Birthday;
     }
 
-    public void setBirthDay(String birthDay) {
-        BirthDay = birthDay;
+    public void setBirthday(String birthday) {
+        Birthday = birthday;
     }
 
-    public String getBirthPlace() {
-        return BirthPlace;
+    public String getPlaceBirth() {
+        return PlaceBirth;
     }
 
-    public void setBirthPlace(String birthPlace) {
-        BirthPlace = birthPlace;
+    public void setPlaceBirth(String placeBirth) {
+        PlaceBirth = placeBirth;
     }
 
     public String getProfession() {
@@ -116,5 +125,29 @@ public class User {
 
     public void setIsStaff(String isStaff) {
         this.isStaff = isStaff;
+    }
+
+    public String getBudget() {
+        return Budget;
+    }
+
+    public void setBudget(String budget) {
+        Budget = budget;
+    }
+
+    public String getDateFrom() {
+        return DateFrom;
+    }
+
+    public void setDateFrom(String dateFrom) {
+        this.DateFrom = dateFrom;
+    }
+
+    public String getDateTo() {
+        return DateTo;
+    }
+
+    public void setDateTo(String dateTo) {
+        this.DateTo = dateTo;
     }
 }

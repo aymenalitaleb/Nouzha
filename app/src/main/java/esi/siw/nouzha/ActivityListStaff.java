@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,20 +24,26 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.common.CommonStaff;
 import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Activity;
+import esi.siw.nouzha.models.User;
 import esi.siw.nouzha.viewHolder.ActivityStaffViewHolder;
 
 public class ActivityListStaff extends AppCompatActivity {
@@ -49,7 +56,7 @@ public class ActivityListStaff extends AppCompatActivity {
 
     //Firebase
     FirebaseDatabase database;
-    DatabaseReference activityList;
+    DatabaseReference activityList, categoryList, userNotification;
     FirebaseStorage storage;
     StorageReference storageReference;
 
@@ -58,7 +65,7 @@ public class ActivityListStaff extends AppCompatActivity {
 
     //Add new  Activity
     EditText edtDesignation, edtnbPlace, edtDescription, edtDate, edtTime_from, edtTime_to, edtPrice, edtDiscount, edtCity, edtStreet, edtStreetNumber, edtZipCode;
-    Button btnSelect, btnUpload;
+    Button btnSelect, btnUpload, btnAdd;
 
     Activity newActivity;
     Uri imageURI;
@@ -74,7 +81,7 @@ public class ActivityListStaff extends AppCompatActivity {
         activityList = database.getReference("Activity");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-
+        categoryList = database.getReference("categoryUser");
 
         //Init
 
@@ -128,6 +135,7 @@ public class ActivityListStaff extends AppCompatActivity {
         edtZipCode = add_category_layout.findViewById(R.id.edtZipCode);
         btnSelect = add_category_layout.findViewById(R.id.btnSelect);
         btnUpload = add_category_layout.findViewById(R.id.btnUpload);
+        btnAdd = add_category_layout.findViewById(R.id.btnAdd);
 
         //Event for buttons
         btnSelect.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +152,22 @@ public class ActivityListStaff extends AppCompatActivity {
             }
         });
 
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (newActivity != null) {
+                    activityList.push().setValue(newActivity);
+                    Snackbar.make(rootLayout, "New Activity " + newActivity.getDesignation() + " was added", Snackbar.LENGTH_SHORT).show();
+                    // send notificationa to all concern users
+                    getAllConcernUsers();
+
+//                    ArrayList<User> users = getAllConcernUser();
+//                    Log.e("array size: ", String.valueOf(users.size()));
+//                    sendNotification(users);
+                }
+            }
+        });
+
         alertDialog.setView(add_category_layout);
         alertDialog.setIcon(R.drawable.ic_folder_special_black_24dp);
 
@@ -157,10 +181,10 @@ public class ActivityListStaff extends AppCompatActivity {
                 if (newActivity != null) {
                     activityList.push().setValue(newActivity);
                     Snackbar.make(rootLayout, "New Activity " + newActivity.getDesignation() + " was added", Snackbar.LENGTH_SHORT).show();
+
                 }
             }
-        });
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -169,6 +193,63 @@ public class ActivityListStaff extends AppCompatActivity {
 
         alertDialog.show();
     }
+
+    private ArrayList<User> getAllConcernUsers() {
+        DatabaseReference userList = categoryList.child("02"); // Here we should get the newActivity dynamically
+        userList.addListenerForSingleValueEvent(new ValueEventListener() {
+        ArrayList<String> phones = new ArrayList<>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    String userPhone = data.getKey();
+                    Log.e("userPhone: ", userPhone);
+                    phones.add(userPhone);
+                }
+                sendNotification(phones);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return null;
+    }
+
+    private void sendNotification(ArrayList<String> phones) {
+        Log.e("array size: ", String.valueOf(phones.size()));
+
+        userNotification = database.getReference("userNotification");
+        for (String phone : phones) {
+            Log.e("user phone", phone);
+            final DatabaseReference notification = userNotification.child(phone);
+            notification.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // get newAcivity's id
+                    notification.child("02").setValue("true");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+    }
+
+    Integer count = 0;
+    private synchronized void writeMessage(String message, int target) {
+        count++;
+        if (count == target) {
+            // do write bye
+            return;
+        }
+        // do write message
+    }
+
 
     private void uploadImage() {
         if (imageURI != null) {
@@ -231,7 +312,6 @@ public class ActivityListStaff extends AppCompatActivity {
 
     }
 
-
     private void loadListActivity(String categoryId) {
         adapter = new FirebaseRecyclerAdapter<Activity, ActivityStaffViewHolder>(
                 Activity.class,
@@ -258,7 +338,6 @@ public class ActivityListStaff extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         recyler_activity.setAdapter(adapter);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

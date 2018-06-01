@@ -43,6 +43,7 @@ import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Category;
 import esi.siw.nouzha.models.CurrentSettings;
+import esi.siw.nouzha.service.ListenNotification;
 import esi.siw.nouzha.viewHolder.CategoryViewHolder;
 import io.paperdb.Paper;
 
@@ -185,6 +186,9 @@ public class Home extends AppCompatActivity
         });
 
 
+        // Call service
+        Intent service = new Intent(Home.this, ListenNotification.class);
+        startService(service);
     }
 
     private void startSearch(CharSequence text) {

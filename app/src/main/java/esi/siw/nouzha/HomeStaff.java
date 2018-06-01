@@ -155,10 +155,7 @@ public class HomeStaff extends AppCompatActivity
             }
         });
 
-        alertDialog.setView(add_category_layout);
-        alertDialog.setIcon(R.drawable.ic_folder_special_black_24dp);
-
-        //SetButton
+               //SetButton
         alertDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -177,6 +174,9 @@ public class HomeStaff extends AppCompatActivity
                 dialogInterface.dismiss();
             }
         });
+
+        alertDialog.setView(add_category_layout);
+        alertDialog.setIcon(R.drawable.ic_folder_special_black_24dp);
 
         alertDialog.show();
 

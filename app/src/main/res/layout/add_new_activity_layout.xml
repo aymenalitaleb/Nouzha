@@ -8,12 +8,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_margin="20dp"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
             android:orientation="vertical">
 
             <EditText
@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Designation"
                 android:inputType="text"
-                android:text=""
+                android:text="activite"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:hint="number of places"
                 android:inputType="number"
-                android:text=""
+                android:text="50"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Description"
                 android:inputType="textMultiLine"
-                android:text=""
+                android:text="activite"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="24sp"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Date"
                 android:inputType="datetime"
-                android:text=""
+                android:text="15/07/2018"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp"
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:hint="From"
                 android:inputType="time"
-                android:text=""
+                android:text="08:00"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp"
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:hint="To"
                 android:inputType="time"
-                android:text=""
+                android:text="16:00"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp"
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Price"
                 android:inputType="number"
-                android:text=""
+                android:text="50"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp" />
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Discount"
                 android:inputType="number"
-                android:text=""
+                android:text="50"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp" />
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:hint="City"
                 android:inputType="text"
-                android:text=""
+                android:text="activite"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp"
@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Street"
                 android:inputType="text"
-                android:text=""
+                android:text="activite"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp"
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Number"
                 android:inputType="text"
-                android:text=""
+                android:text="50"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp"
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Zip Code"
                 android:inputType="number"
-                android:text=""
+                android:text="22000"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="30sp"
@@ -173,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="3">
 
                 <Button
                     android:id="@+id/btnSelect"
@@ -201,6 +201,21 @@
                     android:layout_weight="1"
                     android:background="@color/colorPrimaryDark"
                     android:text="UPLOAD"
+                    android:textColor="@android:color/white"
+                    tools:ignore="Suspicious0dp" />
+
+
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="ADD"
                     android:textColor="@android:color/white"
                     tools:ignore="Suspicious0dp" />
 

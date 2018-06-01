@@ -1,11 +1,13 @@
 package esi.siw.nouzha;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -67,9 +69,6 @@ public class ActivityDetails extends AppCompatActivity  {
         fragmentManager.beginTransaction().replace(R.id.mapContent,fragment).commit();
 
 
-
-
-
         //Init View
 
         numberButton = findViewById(R.id.number_button);
@@ -103,11 +102,18 @@ public class ActivityDetails extends AppCompatActivity  {
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsedAppbar);
 
         //Get Activity id from Intent
-        if (getIntent() != null)
-            activityId = getIntent().getStringExtra("activityId");
+        if (getIntent() != null) {
+            if (getIntent().getExtras() != null) {
+                activityId = getIntent().getStringExtra("activityId");
+            }
+            Log.e("activityId", activityId);
+        }
+
+        Log.e("activityId", activityId);
+
         if (!activityId.isEmpty()) {
            if (Common.isConnectedToInternet(getBaseContext())) {
-                getDetailsActivity(activityId);
+               getDetailsActivity(activityId);
             } else {
                 Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
            }
@@ -147,4 +153,15 @@ public class ActivityDetails extends AppCompatActivity  {
     }
 
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        this.activityId = intent.getStringExtra("activityId");
+        Log.e("activityId new intent", activityId);
+        getDetailsActivity(activityId);
     }
+
+}
+
+
