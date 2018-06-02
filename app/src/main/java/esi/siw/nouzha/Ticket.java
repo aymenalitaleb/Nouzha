@@ -74,8 +74,8 @@ public class Ticket extends AppCompatActivity {
     private void showAlertDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Ticket.this);
-        alertDialog.setTitle("One more step");
-        alertDialog.setMessage("Enter your City: ");
+        alertDialog.setTitle(R.string.one_more_step);
+        alertDialog.setMessage(R.string.enter_your_city);
 
         final EditText edtCity = new EditText(Ticket.this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -86,7 +86,7 @@ public class Ticket extends AppCompatActivity {
         alertDialog.setView(edtCity);//Add edit text to dialog
         alertDialog.setIcon(R.drawable.ic_folder_special_black_24dp);
 
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //Create new request
@@ -103,12 +103,12 @@ public class Ticket extends AppCompatActivity {
                 requests.child(String.valueOf(System.currentTimeMillis())).setValue(request);
                 //Delete ticket
                 new Database(getBaseContext()).cleanTicket();
-                Toast.makeText(Ticket.this, "Order placed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Ticket.this, R.string.order_placed, Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
 
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

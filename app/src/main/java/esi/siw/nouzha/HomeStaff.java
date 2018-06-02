@@ -77,7 +77,7 @@ public class HomeStaff extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_staff);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Categories Management");
+        toolbar.setTitle(R.string.categories_management);
         setSupportActionBar(toolbar);
 
 
@@ -124,14 +124,14 @@ public class HomeStaff extends AppCompatActivity
         if (Common.isConnectedToInternet(getBaseContext())) {
             loadCategories();
         } else {
-            Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void showDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeStaff.this);
-        alertDialog.setTitle("add new Category");
-        alertDialog.setMessage("Please fill full information");
+        alertDialog.setTitle(R.string.add_new_category);
+        alertDialog.setMessage(R.string.please_fill_full_information);
 
         LayoutInflater inflater = this.getLayoutInflater();
         View add_category_layout = inflater.inflate(R.layout.add_new_category_layout, null);
@@ -156,7 +156,7 @@ public class HomeStaff extends AppCompatActivity
         });
 
                //SetButton
-        alertDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -164,11 +164,11 @@ public class HomeStaff extends AppCompatActivity
                 //Here , just create new category
                 if (newCategory != null) {
                     categories.push().setValue(newCategory);
-                    Snackbar.make(drawer, "New category " + newCategory.getName() + " was added", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(drawer, R.string.new_category + " " + newCategory.getName() + " " + R.string.was_added, Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -185,7 +185,7 @@ public class HomeStaff extends AppCompatActivity
     private void uploadImage() {
         if (imageURI != null) {
             final ProgressDialog mDialog = new ProgressDialog(this);
-            mDialog.setMessage("Uploading...");
+            mDialog.setMessage(String.valueOf(R.string.uploading));
             mDialog.show();
             String imageName = UUID.randomUUID().toString();
             final StorageReference imageFolder = storageReference.child("images/" + imageName);
@@ -193,7 +193,7 @@ public class HomeStaff extends AppCompatActivity
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     mDialog.dismiss();
-                    Toast.makeText(HomeStaff.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeStaff.this, R.string.uploaded, Toast.LENGTH_SHORT).show();
                     imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -213,7 +213,7 @@ public class HomeStaff extends AppCompatActivity
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                     double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    mDialog.setMessage("Upload " + progress + " %");
+                    mDialog.setMessage(R.string.uploading + progress + " %");
                 }
             });
 
@@ -224,7 +224,7 @@ public class HomeStaff extends AppCompatActivity
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select picture"), CommonStaff.PICK_IMAGE_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, String.valueOf(R.string.select_image)), CommonStaff.PICK_IMAGE_REQUEST);
 
     }
 
@@ -234,7 +234,7 @@ public class HomeStaff extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CommonStaff.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageURI = data.getData();
-            btnSelect.setText("Image selected !");
+            btnSelect.setText(R.string.image_selected);
 
         }
     }
@@ -342,13 +342,13 @@ public class HomeStaff extends AppCompatActivity
 
     private void deleteCategory(String key) {
         categories.child(key).removeValue();
-        Toast.makeText(this, "Category deleted !!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.category_deleted, Toast.LENGTH_SHORT).show();
     }
 
     private void showUpdateDialog(final String key, final Category item) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeStaff.this);
-        alertDialog.setTitle("Update Category");
-        alertDialog.setMessage("Please fill full information");
+        alertDialog.setTitle(R.string.update_category);
+        alertDialog.setMessage(R.string.please_fill_full_information);
 
         LayoutInflater inflater = this.getLayoutInflater();
         View add_category_layout = inflater.inflate(R.layout.add_new_category_layout, null);
@@ -380,7 +380,7 @@ public class HomeStaff extends AppCompatActivity
         alertDialog.setIcon(R.drawable.ic_folder_special_black_24dp);
 
         //SetButton
-        alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -390,7 +390,7 @@ public class HomeStaff extends AppCompatActivity
                 categories.child(key).setValue(item);
             }
         });
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -403,7 +403,7 @@ public class HomeStaff extends AppCompatActivity
     private void changeImage(final Category item) {
         if (imageURI != null) {
             final ProgressDialog mDialog = new ProgressDialog(this);
-            mDialog.setMessage("Uploading...");
+            mDialog.setMessage(String.valueOf(R.string.uploading));
             mDialog.show();
             String imageName = UUID.randomUUID().toString();
             final StorageReference imageFolder = storageReference.child("images/" + imageName);
@@ -411,7 +411,7 @@ public class HomeStaff extends AppCompatActivity
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     mDialog.dismiss();
-                    Toast.makeText(HomeStaff.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeStaff.this, R.string.uploaded, Toast.LENGTH_SHORT).show();
                     imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -430,7 +430,7 @@ public class HomeStaff extends AppCompatActivity
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                     double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    mDialog.setMessage("Upload " + progress + " %");
+                    mDialog.setMessage(R.string.uploading + " " + progress + " %");
                 }
             });
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -93,19 +92,17 @@ public class MainActivity extends AppCompatActivity {
 
                     //Get User data
                     mDialog.dismiss();
-                    Log.e("phone ", phone);
                     User user = dataSnapshot.child(phone).getValue(User.class);
                     user.setPhone(phone); //set phone
                     if (!Boolean.parseBoolean(user.getIsStaff())) {
                         if (user.getPassword().equals(password)) {
-                            Log.e("lastname", user.getLastname());
                             Intent homeIntent = new Intent(MainActivity.this, Home.class);
                             Common.currentUser = user;
                             startActivity(homeIntent);
                             finish();
 
                         } else {
-                            Toast.makeText(MainActivity.this, "Wrong user's password !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
                         }
                     } else if (Boolean.parseBoolean(user.getIsStaff())) {
                         if (user.getPassword().equals(password)) {
@@ -116,12 +113,12 @@ public class MainActivity extends AppCompatActivity {
                             finish();
 
                         } else {
-                            Toast.makeText(MainActivity.this, "Wrong staff's password !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
                     mDialog.dismiss();
-                    Toast.makeText(MainActivity.this, "User not exist in Database !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.user_not_exist, Toast.LENGTH_SHORT).show();
                 }
             }
 

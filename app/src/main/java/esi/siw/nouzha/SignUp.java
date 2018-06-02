@@ -49,7 +49,7 @@ public class SignUp extends AppCompatActivity {
                 if (Common.isConnectedToInternet(getBaseContext())) {
 
                     final ProgressDialog mDialog = new ProgressDialog(SignUp.this);
-                    mDialog.setMessage("Please waiting...");
+                    mDialog.setMessage(String.valueOf(R.string.please_wait));
                     mDialog.show();
                     table_user.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -57,7 +57,7 @@ public class SignUp extends AppCompatActivity {
                             //Phone number already used
                             if (dataSnapshot.child(edtPhone.getText().toString()).exists()) {
                                 mDialog.dismiss();
-                                Toast.makeText(SignUp.this, "Phone number already register", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUp.this, R.string.phone_already_exist, Toast.LENGTH_SHORT).show();
                             } else {
                                 mDialog.dismiss();
                                 User user = new User(edtFirstName.getText().toString(),
@@ -70,7 +70,7 @@ public class SignUp extends AppCompatActivity {
                                         edtAvatar.getText().toString()
                                 );
                                 table_user.child(edtPhone.getText().toString()).setValue(user);
-                                Toast.makeText(SignUp.this, "Sign Up successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUp.this, R.string.register_successfully, Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }
@@ -82,7 +82,7 @@ public class SignUp extends AppCompatActivity {
                     });
 
                 } else {
-                    Toast.makeText(SignUp.this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUp.this, R.string.check_connection, Toast.LENGTH_SHORT).show();
                 }
             }
         });

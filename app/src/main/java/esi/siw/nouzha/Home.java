@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,7 +50,7 @@ public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseDatabase database;
-    DatabaseReference category, currentSettings, favourite;
+    DatabaseReference category, currentSettings, favourite, categoryUser;
 
 
     TextView txtFullName;
@@ -78,7 +77,7 @@ public class Home extends AppCompatActivity
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Categories");
+        toolbar.setTitle(R.string.categories);
         setSupportActionBar(toolbar);
 
 
@@ -87,6 +86,7 @@ public class Home extends AppCompatActivity
         category = database.getReference("Category");
         currentSettings = database.getReference("Current_Settings");
         favourite = database.getReference("userCategory");
+        categoryUser = database.getReference("categoryUser");
 
         // Init Paper
         Paper.init(this);
@@ -127,7 +127,7 @@ public class Home extends AppCompatActivity
         if ( Common.isConnectedToInternet(getBaseContext())) {
             loadCategories();
         } else {
-            Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -135,7 +135,7 @@ public class Home extends AppCompatActivity
         //Search
 
         materialSearchBar = findViewById(R.id.searchBar);
-        materialSearchBar.setHint("Enter your category");
+        materialSearchBar.setHint(String.valueOf(R.string.enter_your_category));
         // materialSearchBar.setSpeechMode(false);
         loadSuggest();
         materialSearchBar.setLastSuggestions(suggestList);
@@ -254,18 +254,21 @@ public class Home extends AppCompatActivity
                     @Override
                     public void onClick(View v) {
                         final DatabaseReference categories = favourite.child(Common.currentUser.getPhone());
+                        final DatabaseReference users = categoryUser.child(adapter.getRef(position).getKey());
 
                             categories.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (fav.getContentDescription().equals("non")) {
                                         categories.child(adapter.getRef(position).getKey()).setValue("true");
-                                        Toast.makeText(Home.this, "Added to favourite", Toast.LENGTH_SHORT).show();
+                                        users.child(Common.currentUser.getPhone()).setValue("true");
+                                        Toast.makeText(Home.this, R.string.added_to_favourites, Toast.LENGTH_SHORT).show();
                                         fav.setImageResource(R.drawable.ic_favorite_black_24dp);
                                         fav.setContentDescription("oui");
                                     } else {
                                         categories.child(adapter.getRef(position).getKey()).removeValue();
-                                        Toast.makeText(Home.this, "Removed from favourite", Toast.LENGTH_SHORT).show();
+                                        users.child(Common.currentUser.getPhone()).removeValue();
+                                        Toast.makeText(Home.this, R.string.removed_from_favourites, Toast.LENGTH_SHORT).show();
                                         fav.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                                         fav.setContentDescription("non");
                                     }
@@ -285,10 +288,8 @@ public class Home extends AppCompatActivity
                 caregories.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.e("array list", dataSnapshot.getKey());
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             userFavourite.add(data.getKey());
-                            Log.e("array list", data.getKey());
                         }
                     }
 
@@ -340,7 +341,7 @@ public class Home extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -471,7 +472,7 @@ public class Home extends AppCompatActivity
         }
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

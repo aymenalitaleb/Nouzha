@@ -52,7 +52,7 @@ public class ActivitiesList extends AppCompatActivity {
                if (Common.isConnectedToInternet(getBaseContext())) {
                     laodListActivities(categoryId);
                 } else {
-                    Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
                 }
 
             }

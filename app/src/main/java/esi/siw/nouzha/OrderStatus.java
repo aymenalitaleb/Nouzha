@@ -73,7 +73,7 @@ public class OrderStatus extends AppCompatActivity {
         Calendar day = Calendar.getInstance();
         day.setTime(new SimpleDateFormat("MM/dd/yyyy").parse(inputDateString));
         if (day.after(calCurr)) {
-            status = "Days Left: " + (day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH)));
+            status = R.string.days_left+ " " + (day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH)));
         }
         return status;
     }

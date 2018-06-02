@@ -18,7 +18,7 @@
             android:id="@+id/edtPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone number"
+            android:hint="@string/phoneNumber"
             android:inputType="phone"
             android:text="0659298985"
             android:textColor="@android:color/white"
@@ -29,7 +29,7 @@
             android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:text="123456"
             android:textColor="@android:color/white"
@@ -46,7 +46,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:background="@color/BtnSignActive"
-        android:text="Sign In"
+        android:text="@string/login"
         android:textColor="@android:color/white"
         />
 

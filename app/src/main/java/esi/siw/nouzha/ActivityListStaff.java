@@ -1,7 +1,9 @@
 package esi.siw.nouzha;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,13 +14,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -35,15 +38,14 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.UUID;
 
 import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.common.CommonStaff;
 import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Activity;
-import esi.siw.nouzha.models.User;
 import esi.siw.nouzha.viewHolder.ActivityStaffViewHolder;
 
 public class ActivityListStaff extends AppCompatActivity {
@@ -65,6 +67,7 @@ public class ActivityListStaff extends AppCompatActivity {
 
     //Add new  Activity
     EditText edtDesignation, edtnbPlace, edtDescription, edtDate, edtTime_from, edtTime_to, edtPrice, edtDiscount, edtCity, edtStreet, edtStreetNumber, edtZipCode;
+    static String time, date;
     Button btnSelect, btnUpload, btnAdd;
 
     Activity newActivity;
@@ -107,7 +110,7 @@ public class ActivityListStaff extends AppCompatActivity {
                 if (Common.isConnectedToInternet(getBaseContext())) {
                     loadListActivity(categoryId);
                 } else {
-                    Toast.makeText(this, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -115,8 +118,8 @@ public class ActivityListStaff extends AppCompatActivity {
 
     private void showAddActivityDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(ActivityListStaff.this);
-        alertDialog.setTitle("add new Activity");
-        alertDialog.setMessage("Please fill full information");
+        alertDialog.setTitle(R.string.add_new_activity);
+        alertDialog.setMessage(R.string.please_fill_full_information);
 
         LayoutInflater inflater = this.getLayoutInflater();
         View add_category_layout = inflater.inflate(R.layout.add_new_activity_layout, null);
@@ -136,6 +139,64 @@ public class ActivityListStaff extends AppCompatActivity {
         btnSelect = add_category_layout.findViewById(R.id.btnSelect);
         btnUpload = add_category_layout.findViewById(R.id.btnUpload);
         btnAdd = add_category_layout.findViewById(R.id.btnAdd);
+
+        edtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                int month = currentTime.get(Calendar.MONTH);
+                int day = currentTime.get(Calendar.DAY_OF_MONTH);
+                int year = currentTime.get(Calendar.YEAR);
+                DatePickerDialog datePicker;
+                datePicker = new DatePickerDialog(ActivityListStaff.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year,month,dayOfMonth);
+                        edtDate.setText(android.text.format.DateFormat.format("dd/MM/yyyy", calendar));
+                    }
+
+                }, year, month, day ); // true for 24hour
+                datePicker.setTitle(R.string.pick_date);
+                datePicker.show();
+            }
+        });
+
+        edtTime_from.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = currentTime.get(Calendar.MINUTE);
+                TimePickerDialog timePicker;
+                timePicker = new TimePickerDialog(ActivityListStaff.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        edtTime_from.setText(String.format("%02d:%02d", hourOfDay, minute));
+                    }
+                }, hour, minute, true); // true for 24hour
+                timePicker.setTitle(R.string.pick_time);
+                timePicker.show();
+            }
+        });
+
+        edtTime_to.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                int hour = currentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = currentTime.get(Calendar.MINUTE);
+                TimePickerDialog timePicker;
+                timePicker = new TimePickerDialog(ActivityListStaff.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        edtTime_to.setText(String.format("%02d:%02d", hourOfDay, minute));
+                    }
+                }, hour, minute, true); // true for 24hour
+                timePicker.setTitle(R.string.pick_time);
+                timePicker.show();
+            }
+        });
 
         //Event for buttons
         btnSelect.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +218,7 @@ public class ActivityListStaff extends AppCompatActivity {
             public void onClick(View v) {
                 if (newActivity != null) {
                     activityList.push().setValue(newActivity);
-                    Snackbar.make(rootLayout, "New Activity " + newActivity.getDesignation() + " was added", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(rootLayout, R.string.new_activity + newActivity.getDesignation() + R.string.was_added, Snackbar.LENGTH_SHORT).show();
                     // send notificationa to all concern users
                     getAllConcernUsers();
 
@@ -172,7 +233,7 @@ public class ActivityListStaff extends AppCompatActivity {
         alertDialog.setIcon(R.drawable.ic_folder_special_black_24dp);
 
         //SetButton
-        alertDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -180,11 +241,11 @@ public class ActivityListStaff extends AppCompatActivity {
                 //Here , just create new category
                 if (newActivity != null) {
                     activityList.push().setValue(newActivity);
-                    Snackbar.make(rootLayout, "New Activity " + newActivity.getDesignation() + " was added", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(rootLayout, R.string.new_activity + newActivity.getDesignation() + R.string.was_added, Snackbar.LENGTH_SHORT).show();
 
                 }
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -194,7 +255,7 @@ public class ActivityListStaff extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private ArrayList<User> getAllConcernUsers() {
+    private void getAllConcernUsers() {
         DatabaseReference userList = categoryList.child("02"); // Here we should get the newActivity dynamically
         userList.addListenerForSingleValueEvent(new ValueEventListener() {
         ArrayList<String> phones = new ArrayList<>();
@@ -202,7 +263,6 @@ public class ActivityListStaff extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     String userPhone = data.getKey();
-                    Log.e("userPhone: ", userPhone);
                     phones.add(userPhone);
                 }
                 sendNotification(phones);
@@ -214,15 +274,14 @@ public class ActivityListStaff extends AppCompatActivity {
 
             }
         });
-        return null;
     }
 
     private void sendNotification(ArrayList<String> phones) {
-        Log.e("array size: ", String.valueOf(phones.size()));
+
 
         userNotification = database.getReference("userNotification");
         for (String phone : phones) {
-            Log.e("user phone", phone);
+
             final DatabaseReference notification = userNotification.child(phone);
             notification.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -240,21 +299,11 @@ public class ActivityListStaff extends AppCompatActivity {
 
     }
 
-    Integer count = 0;
-    private synchronized void writeMessage(String message, int target) {
-        count++;
-        if (count == target) {
-            // do write bye
-            return;
-        }
-        // do write message
-    }
-
 
     private void uploadImage() {
         if (imageURI != null) {
             final ProgressDialog mDialog = new ProgressDialog(this);
-            mDialog.setMessage("Uploading...");
+            mDialog.setMessage(String.valueOf(R.string.uploading));
             mDialog.show();
             String imageName = UUID.randomUUID().toString();
             final StorageReference imageFolder = storageReference.child("images/" + imageName);
@@ -262,7 +311,7 @@ public class ActivityListStaff extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     mDialog.dismiss();
-                    Toast.makeText(ActivityListStaff.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityListStaff.this, R.string.uploaded, Toast.LENGTH_SHORT).show();
                     imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -297,7 +346,7 @@ public class ActivityListStaff extends AppCompatActivity {
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                     double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
                     String numberAsString = String.format("%.2f", progress);
-                    mDialog.setMessage("Upload " + numberAsString + " %");
+                    mDialog.setMessage(R.string.uploading + numberAsString + " %");
                 }
             });
 
@@ -308,7 +357,7 @@ public class ActivityListStaff extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select picture"), CommonStaff.PICK_IMAGE_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, String.valueOf(R.string.select_image)), CommonStaff.PICK_IMAGE_REQUEST);
 
     }
 
@@ -345,7 +394,7 @@ public class ActivityListStaff extends AppCompatActivity {
 
         if (requestCode == CommonStaff.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageURI = data.getData();
-            btnSelect.setText("Image selected !");
+            btnSelect.setText(R.string.image_selected);
 
         }
     }
@@ -368,8 +417,8 @@ public class ActivityListStaff extends AppCompatActivity {
 
     private void showUpdateFoodDialog(final String key, final Activity item) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(ActivityListStaff.this);
-        alertDialog.setTitle("Update Activity");
-        alertDialog.setMessage("Please fill full information");
+        alertDialog.setTitle(R.string.update_activity);
+        alertDialog.setMessage(R.string.please_fill_full_information);
 
         LayoutInflater inflater = this.getLayoutInflater();
         View add_category_layout = inflater.inflate(R.layout.add_new_activity_layout, null);
@@ -424,7 +473,7 @@ public class ActivityListStaff extends AppCompatActivity {
         alertDialog.setIcon(R.drawable.ic_folder_special_black_24dp);
 
         //SetButton
-        alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -435,8 +484,8 @@ public class ActivityListStaff extends AppCompatActivity {
                 item.setNbPlaces(edtnbPlace.getText().toString());
                 item.setDescription(edtDescription.getText().toString());
                 item.setDate(edtDate.getText().toString());
-                item.setTime_from(edtTime_from.getText().toString());
-                item.setTime_to(edtTime_to.getText().toString());
+                item.setTime_from(time);
+                item.setTime_to(time);
                 item.setPrix(edtPrice.getText().toString());
                 item.setCity(edtCity.getText().toString());
                 item.setStreet(edtStreet.getText().toString());
@@ -447,10 +496,10 @@ public class ActivityListStaff extends AppCompatActivity {
 
                 activityList.child(key).setValue(item);
 
-                Snackbar.make(rootLayout, " Activity " + item.getDesignation() + " was edited", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(rootLayout, R.string.activity +" " + item.getDesignation() + " "+ R.string.was_updated, Snackbar.LENGTH_SHORT).show();
             }
         });
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -464,7 +513,7 @@ public class ActivityListStaff extends AppCompatActivity {
     private void changeImage(final Activity item) {
         if (imageURI != null) {
             final ProgressDialog mDialog = new ProgressDialog(this);
-            mDialog.setMessage("Uploading...");
+            mDialog.setMessage(String.valueOf(R.string.uploading));
             mDialog.show();
             String imageName = UUID.randomUUID().toString();
             final StorageReference imageFolder = storageReference.child("images/" + imageName);
@@ -472,7 +521,7 @@ public class ActivityListStaff extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     mDialog.dismiss();
-                    Toast.makeText(ActivityListStaff.this, "Uploaded !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityListStaff.this, R.string.uploaded, Toast.LENGTH_SHORT).show();
                     imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -491,10 +540,12 @@ public class ActivityListStaff extends AppCompatActivity {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                     double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    mDialog.setMessage("Upload " + progress + " %");
+                    mDialog.setMessage(R.string.uploading + progress + " %");
                 }
             });
 
         }
     }
+
+
 }
