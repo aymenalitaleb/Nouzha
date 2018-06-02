@@ -1,12 +1,15 @@
 package esi.siw.nouzha;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -14,6 +17,8 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +49,7 @@ public class ActivityDetails extends AppCompatActivity implements RatingDialogLi
     ElegantNumberButton numberButton;
     RatingBar ratingBar;
 
+
     String activityId = "";
 
     FirebaseDatabase database;
@@ -61,6 +67,8 @@ public class ActivityDetails extends AppCompatActivity implements RatingDialogLi
         database = FirebaseDatabase.getInstance();
         activities = database.getReference("Activity");
         ratingTable = database.getReference("Rating");
+
+
 
 
         //Map
@@ -98,7 +106,8 @@ public class ActivityDetails extends AppCompatActivity implements RatingDialogLi
                         currentActivity.getDesignation(),
                         numberButton.getNumber(),
                         currentActivity.getPrix(),
-                        currentActivity.getDiscount()
+                        currentActivity.getDiscount(),
+                        currentActivity.getImage()
                 ));
 
                 Toast.makeText(ActivityDetails.this, R.string.added_to_my_tickets, Toast.LENGTH_SHORT).show();
@@ -219,6 +228,10 @@ public class ActivityDetails extends AppCompatActivity implements RatingDialogLi
                 activityId,
                 String.valueOf(value),
                 comments);
+
+
+
+
         ratingTable.child(Common.currentUser.getPhone()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

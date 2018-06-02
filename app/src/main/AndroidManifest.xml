@@ -17,6 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +35,7 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme" />
         <activity android:name=".ActivitiesList" />
-        <activity android:name=".ActivityDetails"  />
+        <activity android:name=".ActivityDetails" />
         <activity android:name=".Ticket" />
         <activity android:name=".OrderStatus" />
         <activity
@@ -44,12 +48,19 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCR05OEs4oj-tQCho0NtIGRVQzwsFsBouo" />
 
-        <activity android:name=".OrderDetail"></activity>
+        <activity android:name=".OrderDetail" />
 
         <service
             android:name=".service.ListenNotification"
             android:enabled="true"
             android:exported="true"></service>
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider952402024927898"
+            android:exported="true" />
+
+        <activity android:name=".ShowComments"></activity>
     </application>
 
 </manifest>

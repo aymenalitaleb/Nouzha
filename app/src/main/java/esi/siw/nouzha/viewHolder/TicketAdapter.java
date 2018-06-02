@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 import esi.siw.nouzha.R;
+import esi.siw.nouzha.Ticket;
 import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Order;
 
@@ -25,7 +27,8 @@ class TicketViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
 
 
     public TextView text_ticket_name, text_Price;
-    public ImageView img_ticket_count;
+    public ImageView img_ticket_count,ticket_image;
+
 
     private ItemClickListener itemClickListener;
 
@@ -39,6 +42,7 @@ class TicketViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
         text_ticket_name = itemView.findViewById(R.id.ticket_item_name);
         text_Price = itemView.findViewById(R.id.ticket_item_Price);
         img_ticket_count = itemView.findViewById(R.id.ticket_item_count);
+        ticket_image = itemView.findViewById(R.id.ticket_image);
     }
 
     @Override
@@ -50,10 +54,12 @@ class TicketViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
 public class TicketAdapter extends RecyclerView.Adapter<TicketViewHolder> {
 
     private List<Order> listData = new ArrayList<>();
+    private Ticket ticket;
     private Context context;
 
-    public TicketAdapter(List<Order> listData, Context context) {
+    public TicketAdapter(List<Order> listData, Context context,Ticket ticket) {
         this.listData = listData;
+        this.ticket = ticket;
         this.context = context;
     }
 
@@ -66,6 +72,13 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketViewHolder> {
 
     @Override
     public void onBindViewHolder(TicketViewHolder holder, int position) {
+
+        Picasso.with(ticket.getBaseContext())
+                .load(listData.get(position).getImage())
+                .resize(70,70)
+                .into(holder.ticket_image);
+
+
         TextDrawable drawable = TextDrawable.builder().buildRound("" + listData.get(position).getQuantity(), Color.RED);
         holder.img_ticket_count.setImageDrawable(drawable);
 

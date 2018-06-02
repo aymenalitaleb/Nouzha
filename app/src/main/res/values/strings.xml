@@ -74,4 +74,7 @@
     <string name="one_more_step">One more step</string>
     <string name="enter_your_city">Enter your city</string>
     <string name="order_placed">Order placed</string>
+
+    <string name="facebook_app_id">952402024927898</string>
+    <string name="facebook_login_protocole_name">fb952402024927898</string>
 </resources>

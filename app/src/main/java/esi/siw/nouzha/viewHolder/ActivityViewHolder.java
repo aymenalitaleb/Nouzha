@@ -11,7 +11,7 @@ import esi.siw.nouzha.R;
 public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView txtActivityName;
-    public ImageView activity_image;
+    public ImageView activity_image,share_image;
 
     private ItemClickListener itemClickListener;
 
@@ -27,6 +27,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
 
         txtActivityName = itemView.findViewById(R.id.activity_name);
         activity_image = itemView.findViewById(R.id.activity_image);
+        share_image = itemView.findViewById(R.id.btnShare);
 
         itemView.setOnClickListener(this);
     }

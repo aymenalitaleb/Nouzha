@@ -46,6 +46,7 @@ import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.common.CommonStaff;
 import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Activity;
+import esi.siw.nouzha.models.Rating;
 import esi.siw.nouzha.viewHolder.ActivityStaffViewHolder;
 
 public class ActivityListStaff extends AppCompatActivity {
@@ -367,6 +368,7 @@ public class ActivityListStaff extends AppCompatActivity {
                 R.layout.activity_item_staff,
                 ActivityStaffViewHolder.class,
                 activityList.orderByChild("categoryId").equalTo(categoryId)
+
         ) {
             @Override
             protected void populateViewHolder(ActivityStaffViewHolder viewHolder, Activity model, int position) {

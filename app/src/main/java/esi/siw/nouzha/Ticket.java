@@ -123,7 +123,7 @@ public class Ticket extends AppCompatActivity {
 
     private void loadListActivity() {
         ticket = new Database(this).getTickets();
-        adapter = new TicketAdapter(ticket, this);
+        adapter = new TicketAdapter(ticket, this,this);
         recyclerView.setAdapter(adapter);
 
         // calcule total price

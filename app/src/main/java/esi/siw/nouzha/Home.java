@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -63,6 +64,10 @@ public class Home extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager;
     FirebaseRecyclerAdapter<Category, CategoryViewHolder> adapter;
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
+
+
 
     DatabaseReference table_user;
 
@@ -76,6 +81,39 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.categories);
         setSupportActionBar(toolbar);
+
+
+        //View
+        swipeRefreshLayout = findViewById(R.id.swipe_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark
+        );
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //        if ( Common.isConnectedToInternet(getBaseContext())) {
+                loadCategories();
+//        } else {
+      //    Toast.makeText(getBaseContext(), R.string.check_connection, Toast.LENGTH_SHORT).show();
+//        }
+
+            }
+        });
+
+        //Default , load for first time
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                //        if ( Common.isConnectedToInternet(getBaseContext())) {
+                loadCategories();
+//        } else {
+                //    Toast.makeText(getBaseContext(), R.string.check_connection, Toast.LENGTH_SHORT).show();
+//        }
+            }
+        });
 
 
         //Init Firebase
@@ -121,11 +159,7 @@ public class Home extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recycler_categories.setLayoutManager(layoutManager);
 
-//        if ( Common.isConnectedToInternet(getBaseContext())) {
-        loadCategories();
-//        } else {
-//            Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
-//        }
+
 
 
         // Call service
@@ -230,6 +264,7 @@ public class Home extends AppCompatActivity
             }
         };
         recycler_categories.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
 
 
     }

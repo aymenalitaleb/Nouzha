@@ -8,7 +8,8 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
+
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
