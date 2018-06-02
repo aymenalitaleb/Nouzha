@@ -29,8 +29,12 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -121,11 +125,11 @@ public class HomeStaff extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recycler_categories.setLayoutManager(layoutManager);
 
-        if (Common.isConnectedToInternet(getBaseContext())) {
+//        if (Common.isConnectedToInternet(getBaseContext())) {
             loadCategories();
-        } else {
-            Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
-        }
+//        } else {
+//            Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private void showDialog() {
@@ -255,7 +259,7 @@ public class HomeStaff extends AppCompatActivity
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-                        //Send Categori Id and start new activity
+                        //Send Category Id and start new activity
                         Intent activityList = new Intent(HomeStaff.this, ActivityListStaff.class);
                         activityList.putExtra("categoryId", adapter.getRef(position).getKey());
                         startActivity(activityList);
@@ -310,7 +314,16 @@ public class HomeStaff extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_logout) {
+         if (id == R.id.nav_share) {
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            String shareBody = "Here is the share content body";
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        }
+
+        else if (id == R.id.nav_logout) {
             // Delete session
             Paper.book().destroy();
             //Logout
@@ -341,11 +354,27 @@ public class HomeStaff extends AppCompatActivity
     }
 
     private void deleteCategory(String key) {
+        //get all activities in category
+        DatabaseReference activities = database.getReference("Activity");
+        Query activityInCategory = activities.orderByChild("categoryId").equalTo(key);
+        activityInCategory.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    postSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         categories.child(key).removeValue();
         Toast.makeText(this, R.string.category_deleted, Toast.LENGTH_SHORT).show();
     }
 
-    private void showUpdateDialog(final String key, final Category item) {
+    private void showUpdateDialog(final String key,  final Category item) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeStaff.this);
         alertDialog.setTitle(R.string.update_category);
         alertDialog.setMessage(R.string.please_fill_full_information);

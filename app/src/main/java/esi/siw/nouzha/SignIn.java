@@ -49,11 +49,11 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (Common.isConnectedToInternet(getBaseContext())) {
+//                if (Common.isConnectedToInternet(getBaseContext())) {
                     final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
                     mDialog.setMessage(String.valueOf(R.string.please_wait));
                     mDialog.show();
-                    table_user.addValueEventListener(new ValueEventListener() {
+                    table_user.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -70,6 +70,7 @@ public class SignIn extends AppCompatActivity {
                                         Common.currentUser = user;
                                         startActivity(homeIntent);
                                         finish();
+                                        table_user.removeEventListener(this);
                                     } else {
                                         Toast.makeText(SignIn.this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
                                     }
@@ -96,9 +97,9 @@ public class SignIn extends AppCompatActivity {
 
                         }
                     });
-                } else {
-                    Toast.makeText(SignIn.this, R.string.check_connection, Toast.LENGTH_SHORT).show();
-                }
+//                } else {
+//                    Toast.makeText(SignIn.this, R.string.check_connection, Toast.LENGTH_SHORT).show();
+//                }
             }
         });
     }

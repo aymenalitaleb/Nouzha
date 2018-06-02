@@ -6,10 +6,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,19 +74,21 @@ public class Ticket extends AppCompatActivity {
     private void showAlertDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Ticket.this);
-        alertDialog.setTitle(R.string.one_more_step);
-        alertDialog.setMessage(R.string.enter_your_city);
+        alertDialog.setTitle("One more step");
+        alertDialog.setMessage("Enter your City: ");
 
-        final EditText edtCity = new EditText(Ticket.this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-        edtCity.setLayoutParams(lp);
-        alertDialog.setView(edtCity);//Add edit text to dialog
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View order_city_comment = inflater.inflate(R.layout.order_city_comment, null);
+        final EditText edtCity = order_city_comment.findViewById(R.id.edtCity);
+        final EditText edtComment = order_city_comment.findViewById(R.id.edtComment);
+
+        alertDialog.setView(order_city_comment);
+
+
         alertDialog.setIcon(R.drawable.ic_folder_special_black_24dp);
 
-        alertDialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //Create new request
@@ -95,6 +97,7 @@ public class Ticket extends AppCompatActivity {
                         Common.currentUser.getFirstname() + " " + Common.currentUser.getLastname(),
                         edtCity.getText().toString(),
                         txtTotalPrice.getText().toString(),
+                        edtComment.getText().toString(),
                         ticket
                 );
 
@@ -103,12 +106,12 @@ public class Ticket extends AppCompatActivity {
                 requests.child(String.valueOf(System.currentTimeMillis())).setValue(request);
                 //Delete ticket
                 new Database(getBaseContext()).cleanTicket();
-                Toast.makeText(Ticket.this, R.string.order_placed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Ticket.this, "Order placed", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
 
-        alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

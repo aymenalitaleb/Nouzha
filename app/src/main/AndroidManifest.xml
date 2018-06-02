@@ -44,6 +44,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCR05OEs4oj-tQCho0NtIGRVQzwsFsBouo" />
 
+        <activity android:name=".OrderDetail"></activity>
+
         <service
             android:name=".service.ListenNotification"
             android:enabled="true"

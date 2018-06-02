@@ -63,15 +63,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (Common.isConnectedToInternet(getBaseContext())) {
-            String user = Paper.book().read(Common.USER_KEY);
-            String password = Paper.book().read(Common.PWD_KEY);
-            if (user != null && password != null) {
-                if (!user.isEmpty() && !password.isEmpty()) {
-                    login(user, password);
-                }
+//        if (Common.isConnectedToInternet(getBaseContext())) {
+        String user = Paper.book().read(Common.USER_KEY);
+        String password = Paper.book().read(Common.PWD_KEY);
+        if (user != null && password != null) {
+            if (!user.isEmpty() && !password.isEmpty()) {
+                login(user, password);
             }
         }
+        //}
 
 
     }

@@ -21,9 +21,10 @@ android {
 }
 
 dependencies {
+    implementation 'com.github.d-max:spots-dialog:0.7@aar'
     implementation 'com.google.maps.android:android-maps-utils:0.4+'
     implementation 'com.google.android.gms:play-services-maps:15.0.0'
-
+    implementation 'com.stepstone.apprating:app-rating:2.2.0'
     implementation 'io.paperdb:paperdb:2.1'
     implementation 'com.google.firebase:firebase-storage:15.0.0'
     implementation 'com.google.firebase:firebase-auth:15.0.0'

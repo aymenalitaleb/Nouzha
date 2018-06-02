@@ -9,18 +9,9 @@
     tools:context=".Home"
     tools:showIn="@layout/app_bar_home">
 
-    <com.mancj.materialsearchbar.MaterialSearchBar
-        android:id="@+id/searchBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        app:mt_speechMode="false"
-        app:mt_hint="Enter your category"
 
-        />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/searchBar"
         android:id="@+id/recycler_categories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

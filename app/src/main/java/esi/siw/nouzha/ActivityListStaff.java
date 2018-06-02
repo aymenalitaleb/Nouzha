@@ -107,11 +107,11 @@ public class ActivityListStaff extends AppCompatActivity {
         if (getIntent() != null) {
             categoryId = getIntent().getStringExtra("categoryId");
             if (!categoryId.isEmpty()) {
-                if (Common.isConnectedToInternet(getBaseContext())) {
+             //   if (Common.isConnectedToInternet(getBaseContext())) {
                     loadListActivity(categoryId);
-                } else {
-                    Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
-                }
+//                } else {
+//                    Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
+//                }
             }
         }
     }

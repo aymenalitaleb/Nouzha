@@ -4,10 +4,12 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import esi.siw.nouzha.models.Request;
 import esi.siw.nouzha.models.User;
 
 public class Common {
     public static User currentUser;
+    public static Request currentRequest;
 
     public static final String UPDATE ="Update";
     public static final String DELETE ="Delete";

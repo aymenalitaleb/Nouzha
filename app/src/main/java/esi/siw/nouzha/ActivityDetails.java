@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,28 +20,35 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.stepstone.apprating.AppRatingDialog;
+import com.stepstone.apprating.listener.RatingDialogListener;
+
+import java.util.Arrays;
 
 import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.database.Database;
 import esi.siw.nouzha.models.Activity;
 import esi.siw.nouzha.models.Order;
+import esi.siw.nouzha.models.Rating;
 
-public class ActivityDetails extends AppCompatActivity  {
+public class ActivityDetails extends AppCompatActivity implements RatingDialogListener {
 
     private GoogleMap mMap;
-    public static Double latitude,longitude;
+    public static Double latitude, longitude;
     public static String designation;
 
     TextView activity_name, activity_price, activity_description, activity_date, activity_time_from, activity_time_to, activity_nb_place, activity_adress;
     ImageView activity_image;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    FloatingActionButton btnGoing;
+    FloatingActionButton btnGoing, btnRating;
     ElegantNumberButton numberButton;
+    RatingBar ratingBar;
 
     String activityId = "";
 
     FirebaseDatabase database;
     DatabaseReference activities;
+    DatabaseReference ratingTable;
 
     Activity currentActivity;
 
@@ -52,25 +60,36 @@ public class ActivityDetails extends AppCompatActivity  {
         //Firebase
         database = FirebaseDatabase.getInstance();
         activities = database.getReference("Activity");
+        ratingTable = database.getReference("Rating");
 
 
         //Map
-        Fragment fragment= null;
+        Fragment fragment = null;
         Class fragmentClass = null;
-        fragmentClass=MapFragment.class;
-        try{
+        fragmentClass = MapFragment.class;
+        try {
             fragment = (Fragment) fragmentClass.newInstance();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.mapContent,fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.mapContent, fragment).commit();
 
 
         //Init View
 
         numberButton = findViewById(R.id.number_button);
         btnGoing = findViewById(R.id.btnGoing);
+        btnRating = findViewById(R.id.btnRating);
+        ratingBar = findViewById(R.id.ratingBar);
+
+        btnRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showRatingDialog();
+            }
+        });
+
         btnGoing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,17 +126,61 @@ public class ActivityDetails extends AppCompatActivity  {
 
         }
 
-
         if (!activityId.isEmpty()) {
-           if (Common.isConnectedToInternet(getBaseContext())) {
-               getDetailsActivity(activityId);
-            } else {
-                Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
-           }
+//           if (Common.isConnectedToInternet(getBaseContext())) {
+            getDetailsActivity(activityId);
+            getRatingActivity(activityId);
+//            } else {
+//                Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
+//           }
 
         }
 
     }
+    private void getRatingActivity(String activityId) {
+        com.google.firebase.database.Query activityRating = ratingTable.orderByChild("activityId").equalTo(activityId);
+        activityRating.addValueEventListener(new ValueEventListener() {
+            float count = 0, sum = 0;
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Rating item = postSnapshot.getValue(Rating.class);
+                    sum += Integer.parseInt(item.getRateValue());
+                    count++;
+                }
+                if (count != 0) {
+                    float average = sum / count;
+                    ratingBar.setRating(average);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showRatingDialog() {
+        new AppRatingDialog.Builder()
+                .setPositiveButtonText("Submit")
+                .setNegativeButtonText("Cancel")
+                .setNoteDescriptions(Arrays.asList("Very Bad", "Not Good", "Quite Ok", "Very Good", "Excellent"))
+                .setDefaultRating(1)
+                .setTitle("Rate this activity")
+                .setDescription("Please select some stars and give your feedback")
+                .setTitleTextColor(R.color.colorPrimary)
+                .setDescriptionTextColor(R.color.colorPrimary)
+                .setHint("Please write your comment here")
+                .setHintTextColor(R.color.colorAccent)
+                .setCommentTextColor(android.R.color.white)
+                .setCommentBackgroundColor(R.color.colorPrimaryDark)
+                .setWindowAnimation(R.style.RatingDialogFadAnim)
+                .create(ActivityDetails.this)
+                .show();
+    }
+
 
     private void getDetailsActivity(final String activityId) {
         activities.child(activityId).addValueEventListener(new ValueEventListener() {
@@ -128,7 +191,7 @@ public class ActivityDetails extends AppCompatActivity  {
                 //Set Image
                 Picasso.with(getBaseContext()).load(currentActivity.getImage()).into(activity_image);
                 collapsingToolbarLayout.setTitle(currentActivity.getDesignation());
-                designation=currentActivity.getDesignation();
+                designation = currentActivity.getDesignation();
                 activity_price.setText(currentActivity.getPrix());
                 activity_name.setText(currentActivity.getDesignation());
                 activity_description.setText(currentActivity.getDescription());
@@ -136,8 +199,8 @@ public class ActivityDetails extends AppCompatActivity  {
                 activity_time_from.setText(currentActivity.getTime_from());
                 activity_time_to.setText(currentActivity.getTime_to());
                 activity_nb_place.setText(currentActivity.getNbPlaces());
-                latitude=Double.valueOf(currentActivity.getLatitude());
-                longitude=Double.valueOf(currentActivity.getLongitude());
+                latitude = Double.valueOf(currentActivity.getLatitude());
+                longitude = Double.valueOf(currentActivity.getLongitude());
                 String activityAdresse = currentActivity.getNumber() + ", " + currentActivity.getStreet() + ", " + currentActivity.getCity();
                 activity_adress.setText(activityAdresse);
             }
@@ -149,6 +212,46 @@ public class ActivityDetails extends AppCompatActivity  {
         });
     }
 
+    @Override
+    public void onPositiveButtonClicked(int value, String comments) {
+        //Get rating and upload it to firebase
+        final Rating rating = new Rating(Common.currentUser.getPhone(),
+                activityId,
+                String.valueOf(value),
+                comments);
+        ratingTable.child(Common.currentUser.getPhone()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(Common.currentUser.getPhone()).exists()) {
+                    //remove old value
+                    ratingTable.child(Common.currentUser.getPhone()).removeValue();
+                    //Update new value
+                    ratingTable.child(Common.currentUser.getPhone()).setValue(rating);
+                } else {
+                    //Update new value
+                    ratingTable.child(Common.currentUser.getPhone()).setValue(rating);
+                }
+                Toast.makeText(ActivityDetails.this, "Thank you for submit rating !!!", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onNegativeButtonClicked() {
+
+    }
+
+    @Override
+    public void onNeutralButtonClicked() {
+
+    }
 }
 
 

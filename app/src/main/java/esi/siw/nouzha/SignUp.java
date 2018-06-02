@@ -46,7 +46,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (Common.isConnectedToInternet(getBaseContext())) {
+//                if (Common.isConnectedToInternet(getBaseContext())) {
 
                     final ProgressDialog mDialog = new ProgressDialog(SignUp.this);
                     mDialog.setMessage(String.valueOf(R.string.please_wait));
@@ -81,9 +81,9 @@ public class SignUp extends AppCompatActivity {
                         }
                     });
 
-                } else {
-                    Toast.makeText(SignUp.this, R.string.check_connection, Toast.LENGTH_SHORT).show();
-                }
+//                } else {
+//                    Toast.makeText(SignUp.this, R.string.check_connection, Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 

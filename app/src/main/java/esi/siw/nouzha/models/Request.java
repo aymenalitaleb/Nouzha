@@ -10,20 +10,22 @@ public class Request {
     private String total;
     private String status;
     private String date;
+    private String comment;
     private List<Order> activities;
 
 
     public Request() {
     }
 
-    public Request(String phone, String name, String city, String total, List<Order> activities) {
+    public Request(String phone, String name, String city, String total,String comment, List<Order> activities) {
         this.phone = phone;
         this.name = name;
         this.city = city;
         this.total = total;
         this.date="";
+        this.comment=comment;
         this.activities = activities;
-        this.status="";
+        this.status="0";// 0: few weeks left, 1: less than a week, 2: few days left
     }
 
     public String getPhone() {
@@ -80,5 +82,13 @@ public class Request {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

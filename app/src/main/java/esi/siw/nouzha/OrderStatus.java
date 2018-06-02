@@ -1,19 +1,18 @@
 package esi.siw.nouzha;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import esi.siw.nouzha.common.Common;
+import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Request;
 import esi.siw.nouzha.viewHolder.OrderViewHolder;
 
@@ -54,12 +53,22 @@ public class OrderStatus extends AppCompatActivity {
                 requests.orderByChild("phone").equalTo(phone)
         ) {
             @Override
-            protected void populateViewHolder(OrderViewHolder viewHolder, Request model, int position) {
+            protected void populateViewHolder(OrderViewHolder viewHolder, final Request model, int position) {
 
                 viewHolder.txtOrderId.setText(adapter.getRef(position).getKey());
                 viewHolder.txtOrderStatus.setText("");
                 viewHolder.txtOrderDate.setText("12/12/2018");
                 viewHolder.txtOrderPhone.setText(Common.currentUser.getPhone());
+
+                viewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        Intent orderDetail = new Intent(OrderStatus.this, OrderDetail.class);
+                        orderDetail.putExtra("OrderId", adapter.getRef(position).getKey());
+                        Common.currentRequest = model;
+                        startActivity(orderDetail);
+                    }
+                });
 
 
             }
@@ -67,14 +76,14 @@ public class OrderStatus extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private String convertDateToStatus(String inputDateString) throws ParseException {
-        String status = "";
-        Calendar calCurr = Calendar.getInstance();
-        Calendar day = Calendar.getInstance();
-        day.setTime(new SimpleDateFormat("MM/dd/yyyy").parse(inputDateString));
-        if (day.after(calCurr)) {
-            status = R.string.days_left+ " " + (day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH)));
-        }
-        return status;
+    private String convertDateToStatus(String status) {
+        if (status.equals("0"))
+            return "Few weeks left";
+
+        else if (status.equals("1"))
+            return "Less than a week";
+
+        else
+            return "Few days left";
     }
 }
