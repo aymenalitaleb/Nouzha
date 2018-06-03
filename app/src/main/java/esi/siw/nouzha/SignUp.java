@@ -1,6 +1,7 @@
 package esi.siw.nouzha;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,13 +15,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.models.User;
 
 public class SignUp extends AppCompatActivity {
 
     EditText edtFirstName, edtLastName, edtEmail, edtPhone, edtPassword, edtBirthDay, edtBirthPlace, edtAvatar, edtProfession;
-    Button btnSignUp;
+    Button btnSignUp, btnSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +36,20 @@ public class SignUp extends AppCompatActivity {
         edtAvatar = findViewById(R.id.edtAvatar);
         edtProfession = findViewById(R.id.edtProfession);
         btnSignUp = findViewById(R.id.btnSignUp);
+        btnSignIn = findViewById(R.id.btnSignIn);
 
         //Init Firebase
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = database.getReference("User");
+
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignUp.this, SignIn.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
 

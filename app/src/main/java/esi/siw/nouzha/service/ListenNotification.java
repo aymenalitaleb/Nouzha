@@ -1,15 +1,12 @@
 package esi.siw.nouzha.service;
 
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
@@ -21,11 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Random;
 
 import esi.siw.nouzha.ActivityDetails;
-import esi.siw.nouzha.OrderStatus;
 import esi.siw.nouzha.R;
 import esi.siw.nouzha.common.Common;
-import esi.siw.nouzha.database.Database;
-import esi.siw.nouzha.models.Notification;
 
 public class ListenNotification extends Service implements ChildEventListener{
 

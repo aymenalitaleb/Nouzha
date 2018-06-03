@@ -1,5 +1,6 @@
 package esi.siw.nouzha;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,10 +17,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,18 +38,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 import esi.siw.nouzha.common.Common;
 import esi.siw.nouzha.interfaces.ItemClickListener;
 import esi.siw.nouzha.models.Category;
-import esi.siw.nouzha.models.CurrentSettings;
+import esi.siw.nouzha.models.User;
 import esi.siw.nouzha.service.ListenNotification;
 import esi.siw.nouzha.viewHolder.CategoryViewHolder;
 import io.paperdb.Paper;
@@ -66,7 +71,10 @@ public class Home extends AppCompatActivity
 
     SwipeRefreshLayout swipeRefreshLayout;
 
-
+    //Search Functionality
+    FirebaseRecyclerAdapter<Category, CategoryViewHolder> searchAdapter;
+    List<String> suggestList = new ArrayList<>();
+    MaterialSearchBar materialSearchBar;
 
 
     DatabaseReference table_user;
@@ -159,12 +167,35 @@ public class Home extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recycler_categories.setLayoutManager(layoutManager);
 
-
+        if ( Common.isConnectedToInternet(getBaseContext())) {
+            loadCategories();
+        } else {
+            Toast.makeText(this, R.string.check_connection, Toast.LENGTH_SHORT).show();
+        }
 
 
         // Call service
         Intent service = new Intent(Home.this, ListenNotification.class);
         startService(service);
+    }
+
+
+    private void loadSuggest() {
+        category.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Category item = postSnapshot.getValue(Category.class);
+                    suggestList.add(item.getName());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void loadCategories() {
@@ -186,29 +217,29 @@ public class Home extends AppCompatActivity
                         final DatabaseReference categories = favourite.child(Common.currentUser.getPhone());
                         final DatabaseReference users = categoryUser.child(adapter.getRef(position).getKey());
 
-                        categories.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (fav.getContentDescription().equals("non")) {
-                                    categories.child(adapter.getRef(position).getKey()).setValue("true");
-                                    users.child(Common.currentUser.getPhone()).setValue("true");
-                                    Toast.makeText(Home.this, R.string.added_to_favourites, Toast.LENGTH_SHORT).show();
-                                    fav.setImageResource(R.drawable.ic_favorite_black_24dp);
-                                    fav.setContentDescription("oui");
-                                } else {
-                                    categories.child(adapter.getRef(position).getKey()).removeValue();
-                                    users.child(Common.currentUser.getPhone()).removeValue();
-                                    Toast.makeText(Home.this, R.string.removed_from_favourites, Toast.LENGTH_SHORT).show();
-                                    fav.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                                    fav.setContentDescription("non");
+                            categories.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (fav.getContentDescription().equals("non")) {
+                                        categories.child(adapter.getRef(position).getKey()).setValue("true");
+                                        users.child(Common.currentUser.getPhone()).setValue("true");
+                                        Toast.makeText(Home.this, R.string.added_to_favourites, Toast.LENGTH_SHORT).show();
+                                        fav.setImageResource(R.drawable.ic_favorite_black_24dp);
+                                        fav.setContentDescription("oui");
+                                    } else {
+                                        categories.child(adapter.getRef(position).getKey()).removeValue();
+                                        users.child(Common.currentUser.getPhone()).removeValue();
+                                        Toast.makeText(Home.this, R.string.removed_from_favourites, Toast.LENGTH_SHORT).show();
+                                        fav.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                                        fav.setContentDescription("non");
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
 
                     }
                 });
@@ -304,31 +335,90 @@ public class Home extends AppCompatActivity
 
     private void insertCurrentSettings() {
 
+        DatabaseReference userTable = database.getReference("User");
+        final User[] user = new User[1];
+
+        Log.e("phone1: ", Common.currentUser.getPhone());
+
+        final EditText freeTimeTo = new EditText(Home.this);
+        final EditText freeTimeFrom = new EditText(Home.this);
+        final EditText currentBudget = new EditText(Home.this);
+        userTable.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("phone2: ", Common.currentUser.getPhone());
+                user[0] = dataSnapshot.child(Common.currentUser.getPhone()).getValue(User.class);
+                freeTimeFrom.setText(user[0].getDateFrom());
+                freeTimeTo.setText(user[0].getDateTo());
+                currentBudget.setText(user[0].getBudget());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("error reading data: ", databaseError.getMessage());
+            }
+        });
+
+
         LinearLayout layout = new LinearLayout(getBaseContext());
         layout.setOrientation(LinearLayout.VERTICAL);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Home.this);
         alertDialog.setTitle("Insert your current settings");
-        final EditText currentBudget = new EditText(Home.this);
         currentBudget.setInputType(InputType.TYPE_CLASS_NUMBER);
         currentBudget.setHint("Budget");
-        final EditText freeTimeFrom = new EditText(Home.this);
+
         freeTimeFrom.setInputType(InputType.TYPE_DATETIME_VARIATION_TIME);
-        freeTimeFrom.setHint("From");
-        final EditText freeTimeTo = new EditText(Home.this);
+        freeTimeFrom.setHint("Free date from");
+        freeTimeFrom.setFocusable(false);
+        freeTimeFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                int month = currentTime.get(Calendar.MONTH);
+                int day = currentTime.get(Calendar.DAY_OF_MONTH);
+                int year = currentTime.get(Calendar.YEAR);
+                DatePickerDialog datePicker;
+                datePicker = new DatePickerDialog(Home.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year,month,dayOfMonth);
+                        freeTimeFrom.setText(android.text.format.DateFormat.format("dd/MM/yyyy", calendar));
+                    }
+
+                }, year, month, day ); // true for 24hour
+                datePicker.setTitle(R.string.pick_date);
+                datePicker.show();
+            }
+        });
         freeTimeTo.setInputType(InputType.TYPE_DATETIME_VARIATION_TIME);
-        freeTimeTo.setHint("To");
-        final EditText freeDate = new EditText(Home.this);
-        freeDate.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
-        freeDate.setHint("Date");
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
+        freeTimeTo.setHint("Free date to");
+        freeTimeTo.setFocusable(false);
+        freeTimeTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                int month = currentTime.get(Calendar.MONTH);
+                int day = currentTime.get(Calendar.DAY_OF_MONTH);
+                int year = currentTime.get(Calendar.YEAR);
+                DatePickerDialog datePicker;
+                datePicker = new DatePickerDialog(Home.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year,month,dayOfMonth);
+                        freeTimeTo.setText(android.text.format.DateFormat.format("dd/MM/yyyy", calendar));
+                    }
+
+                }, year, month, day ); // true for 24hour
+                datePicker.setTitle(R.string.pick_date);
+                datePicker.show();
+            }
+        });
 
         layout.addView(currentBudget);
         layout.addView(freeTimeFrom);
         layout.addView(freeTimeTo);
-        layout.addView(freeDate);
 
         alertDialog.setView(layout);
         alertDialog.setIcon(R.drawable.ic_settings_black_24dp);
@@ -336,26 +426,17 @@ public class Home extends AppCompatActivity
         alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //Create new request
-                CurrentSettings cSettings = new CurrentSettings(
-                        currentBudget.getText().toString(),
-                        freeTimeFrom.getText().toString(),
-                        freeTimeTo.getText().toString(),
-                        freeDate.getText().toString(),
-                        Common.currentUser.getPhone(),
-                        Calendar.getInstance().getTime().toString()
-                );
-
-                //submit to firebase
-                // we will using System.CurrentTimeMillis as a key
-                currentSettings.child(String.valueOf(System.currentTimeMillis())).setValue(cSettings);
+                final String phone = Common.currentUser.getPhone();
+                database.getReference("User").child(phone).child("Budget").setValue(currentBudget.getText().toString());
+                database.getReference("User").child(phone).child("DateFrom").setValue(freeTimeFrom.getText().toString());
+                database.getReference("User").child(phone).child("DateTo").setValue(freeTimeTo.getText().toString());
                 Toast.makeText(Home.this, "Settings saved", Toast.LENGTH_SHORT).show();
             }
         });
 
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });

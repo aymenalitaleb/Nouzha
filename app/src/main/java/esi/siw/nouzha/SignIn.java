@@ -3,10 +3,12 @@ package esi.siw.nouzha;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,19 +24,36 @@ import io.paperdb.Paper;
 
 public class SignIn extends AppCompatActivity {
     EditText edtPhone, edtPassword;
-    Button btnSignIn;
+    Button btnSignIn, btnSignUp;
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+
+    LinearLayout linearLayout1, linearLayout2;
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            linearLayout1.setVisibility(View.VISIBLE);
+            linearLayout2.setVisibility(View.VISIBLE);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        linearLayout1 = findViewById(R.id.linearLayout1);
+        linearLayout2 = findViewById(R.id.linearLayout2);
+
+        handler.postDelayed(runnable, 1200);
 
         edtPhone = findViewById(R.id.edtPhone);
         edtPassword = findViewById(R.id.edtPassword);
         btnSignIn = findViewById(R.id.btnSignIn);
+        btnSignUp = findViewById(R.id.btnSignUp);
 
         //Init Firebase
         final DatabaseReference table_user = database.getReference("User");
@@ -44,6 +63,15 @@ public class SignIn extends AppCompatActivity {
 
         Paper.book().write(Common.USER_KEY, edtPhone.getText().toString());
         Paper.book().write(Common.PWD_KEY, edtPassword.getText().toString());
+
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignIn.this, SignUp.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override

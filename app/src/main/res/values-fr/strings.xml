@@ -55,10 +55,13 @@
     <string name="wrong_password">Mot de passe incorrecte !</string>
     <string name="user_not_exist">Les informations d\'identification ne correspondent pas</string>
     <string name="days_left">Jours restent:</string>
-    <string name="please_wait">Veuillez patienter ...</string>
+    <string name="please_wait">Veuillez patienter …</string>
     <string name="phone_already_exist">Numéro de téléphone existe déjà !</string>
     <string name="register_successfully">Enregistré avec succés !</string>
     <string name="one_more_step">Un dernier pas</string>
     <string name="enter_your_city">Entrer votre ville</string>
     <string name="order_placed">Ordre ajouté</string>
+    <string name="next">Suivant</string>
+    <string name="previous">Précedent</string>
+    <string name="finish">Terminer</string>
 </resources>

@@ -3,10 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/login_background"
     tools:context=".SignIn">
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:paddingTop="180dp"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -21,15 +25,24 @@
             android:hint="@string/phoneNumber"
             android:inputType="phone"
             android:text="0659298985"
+            android:background="@drawable/et_bg"
+            android:backgroundTint="@color/colorPrimary"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white"
             android:textSize="30sp" />
 
         <EditText
+            android:layout_marginTop="20dp"
+            android:background="@drawable/et_bg"
+            android:backgroundTint="@color/colorPrimary"
+            android:paddingLeft="15dp"
             android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
+            android:paddingRight="15dp"
             android:inputType="textPassword"
             android:text="123456"
             android:textColor="@android:color/white"
@@ -37,17 +50,42 @@
             android:textSize="30sp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSignIn"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@color/BtnSignActive"
-        android:text="@string/login"
-        android:textColor="@android:color/white"
-        />
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="2">
+        <Button
+            android:id="@+id/btnSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="@string/login"
+            android:textColor="@android:color/white"
+            />
+
+        <Button
+            android:id="@+id/btnSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="@string/register"
+            android:textColor="@android:color/white"
+            />
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>
